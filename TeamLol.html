@@ -375,9 +375,14 @@
     <div class="result" id="result">
       <div class="result-header">
         <h2 id="sessionTitle"></h2>
-        <button class="btn-ghost sm" onclick="generate()">
-          <i class="ti ti-refresh"></i> Regénérer
-        </button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn-ghost sm" id="rerollRolesBtn" onclick="rerollRoles()" style="display:none" title="Garder les équipes, changer uniquement les rôles">
+            <i class="ti ti-arrows-shuffle"></i> Relancer les rôles
+          </button>
+          <button class="btn-ghost sm" onclick="generate()">
+            <i class="ti ti-refresh"></i> Regénérer
+          </button>
+        </div>
       </div>
       <div class="teams-grid" id="teamsGrid"></div>
       <p class="diff-row" id="diffRow"></p>
@@ -439,6 +444,7 @@ let players = [], idCounter = 0;
 let lastMask = -1;
 let savedPlayers = [];
 let savedCounter = 0;
+let lastT1 = [], lastT2 = [], lastS1 = 0, lastS2 = 0; // équipes actuellement affichées
 
 /* ─── localStorage ─── */
 function loadFromStorage() {
@@ -728,6 +734,10 @@ function generate() {
 
   const s1 = t1.reduce((a, p) => a + p.rank, 0);
   const s2 = t2.reduce((a, p) => a + p.rank, 0);
+
+  // Mémoriser les équipes pour pouvoir régénérer uniquement les rôles
+  lastT1 = t1; lastT2 = t2; lastS1 = s1; lastS2 = s2;
+
   document.getElementById('teamsGrid').innerHTML =
     buildTeam('🔵 Équipe 1', t1, s1, roles1, 'blue') +
     buildTeam('🔴 Équipe 2', t2, s2, roles2, 'red');
@@ -740,6 +750,16 @@ function generate() {
 
   document.getElementById('placeholder').style.display = 'none';
   document.getElementById('result').style.display = 'flex';
+  document.getElementById('rerollRolesBtn').style.display = useRoles ? 'inline-flex' : 'none';
+}
+
+function rerollRoles() {
+  if (!lastT1.length) return;
+  const roles1 = shuffle(ROLES);
+  const roles2 = shuffle(ROLES);
+  document.getElementById('teamsGrid').innerHTML =
+    buildTeam('🔵 Équipe 1', lastT1, lastS1, roles1, 'blue') +
+    buildTeam('🔴 Équipe 2', lastT2, lastS2, roles2, 'red');
 }
 
 function showError(msg) {
