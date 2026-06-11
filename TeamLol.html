@@ -9,351 +9,309 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:           #0f1117;
-      --bg-2:         #181c25;
-      --bg-3:         #1e2330;
-      --border:       rgba(255,255,255,0.08);
-      --border-hover: rgba(255,255,255,0.16);
-      --text:         #e8eaf0;
-      --text-muted:   #7a7f94;
-      --accent-blue:  #4d8ef5;
-      --accent-red:   #e05252;
-      --accent-gold:  #c89b3c;
-      --radius-sm:    6px;
-      --radius-md:    10px;
-      --radius-lg:    14px;
-      --font:         system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --bg:        #05050A;
+      --bg-2:      #0D0D16;
+      --bg-3:      #13131F;
+      --bg-4:      #1A1A2A;
+      --border:    rgba(200,170,110,0.1);
+      --border-h:  rgba(200,170,110,0.22);
+      --text:      #E8E0D0;
+      --text-2:    #A09880;
+      --gold:      #C8AA6E;
+      --gold-d:    #A0843C;
+      --blue:      #4D8EF5;
+      --red:       #C8392B;
+      --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-xl: 22px;
+      --font: 'Segoe UI', system-ui, sans-serif;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.5;
-    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5; }
 
-    .page {
-      display: grid;
-      grid-template-columns: 290px 1fr 260px;
-      height: 100vh;
-      overflow: hidden;
-    }
+    /* ── Layout ── */
+    .app { display: grid; grid-template-columns: 300px 1fr 270px; height: 100vh; overflow: hidden; }
+    .panel { background: var(--bg-2); border-right: 1px solid var(--border); overflow-y: auto; overflow-x: hidden; }
+    .panel-right { background: var(--bg-2); border-left: 1px solid var(--border); border-right: none; overflow-y: auto; overflow-x: hidden; }
+    .main { overflow-y: auto; background: var(--bg); }
+    .panel-inner { padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
 
-    .sidebar-left {
-      background: var(--bg-2);
-      border-right: 1px solid var(--border);
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 10px; }
 
-    .main-content {
-      overflow-y: auto;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-    }
+    /* ── Brand ── */
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; padding: 0.25rem 0; }
+    .brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--gold-d), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 12px rgba(200,170,110,0.3); }
+    .brand-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
+    .brand-sub { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1px; }
 
-    .sidebar-right {
-      background: var(--bg-2);
-      border-left: 1px solid var(--border);
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
+    /* ── Divider ── */
+    .div { height: 1px; background: var(--border); }
 
-    .sidebar-inner {
-      padding: 1.5rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
+    /* ── Labels ── */
+    .lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-2); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .cnt { background: var(--bg-4); color: var(--text-2); border-radius: 20px; padding: 1px 8px; font-size: 10px; font-weight: 500; text-transform: none; letter-spacing: 0; }
 
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-icon { font-size: 26px; line-height: 1; }
-    .brand h1 { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: 0.01em; }
-    .brand p  { font-size: 10px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1px; }
-
-    .field-label {
-      font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--text-muted);
-      display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
-    }
-    .count-badge {
-      font-size: 10px; font-weight: 500; text-transform: none; letter-spacing: 0;
-      background: var(--bg-3); color: var(--text-muted);
-      border-radius: 20px; padding: 1px 8px;
-    }
-
+    /* ── Inputs ── */
     input[type=text], select {
       background: var(--bg-3); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); color: var(--text);
-      padding: 8px 10px; font-size: 13px; font-family: var(--font);
-      outline: none; transition: border-color 0.15s; width: 100%;
+      border-radius: var(--r-sm); color: var(--text); padding: 8px 10px;
+      font-size: 13px; font-family: var(--font); outline: none;
+      transition: border-color 0.15s; width: 100%;
     }
-    input[type=text]::placeholder { color: var(--text-muted); }
-    input[type=text]:focus, select:focus { border-color: var(--accent-blue); }
+    input[type=text]::placeholder { color: var(--text-2); opacity: 0.6; }
+    input[type=text]:focus, select:focus { border-color: var(--gold); }
     select { cursor: pointer; }
-    select option { background: var(--bg-3); color: var(--text); }
+    select option { background: var(--bg-3); }
+    .player-row select { padding: 8px 4px; font-size: 12px; width: auto; min-width: 0; }
 
-    .player-grid { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
-    .player-row { display: grid; grid-template-columns: 1fr 115px 28px 28px; gap: 6px; align-items: center; }
+    /* ── Mode switcher ── */
+    .mode-sw { display: flex; gap: 3px; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--r-md); padding: 3px; }
+    .mode-btn { flex: 1; padding: 7px 8px; font-size: 12px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; background: transparent; color: var(--text-2); font-family: var(--font); transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .mode-btn.active { background: var(--bg-4); color: var(--gold); box-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+    .mode-btn:not(.active):hover { color: var(--text); }
 
-    .remove-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--text-muted); font-size: 16px;
-      padding: 0; width: 28px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-sm); transition: background 0.15s, color 0.15s;
-    }
-    .remove-btn:hover { background: rgba(224,82,82,0.15); color: var(--accent-red); }
+    /* ── Player rows ── */
+    .player-grid { display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px; }
+    .player-row { display: grid; grid-template-columns: 1fr auto 28px 28px; gap: 5px; align-items: center; }
 
-    .pin-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--text-muted); font-size: 15px;
-      padding: 0; width: 28px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-sm); transition: background 0.15s, color 0.15s;
-    }
-    .pin-btn:hover { background: rgba(200,155,60,0.15); color: var(--accent-gold); }
-    .pin-btn.pinned { color: var(--accent-gold); cursor: default; }
-    .pin-btn.pinned:hover { background: none; }
-
-    .toggle-row {
-      display: flex; gap: 10px; align-items: flex-start;
-      background: var(--bg-3); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 10px 12px;
-    }
-    .toggle-row input[type=checkbox] {
-      width: 15px; height: 15px; margin-top: 2px;
-      flex-shrink: 0; cursor: pointer; accent-color: var(--accent-blue);
-    }
-    .toggle-row label { cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
-    .toggle-title { font-size: 13px; color: var(--text); font-weight: 500; }
-    .toggle-sub   { font-size: 11px; color: var(--text-muted); }
-
+    /* ── Buttons ── */
     .btn-primary {
-      background: var(--accent-blue); color: #fff; border: none;
-      border-radius: var(--radius-md); padding: 10px 16px;
-      font-size: 14px; font-weight: 500; cursor: pointer; width: 100%;
-      display: flex; align-items: center; justify-content: center; gap: 7px;
-      font-family: var(--font); transition: background 0.15s, transform 0.1s;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold)); color: #0D0D10; border: none;
+      border-radius: var(--r-md); padding: 10px 16px; font-size: 14px; font-weight: 700;
+      cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 7px;
+      font-family: var(--font); transition: opacity 0.15s, transform 0.1s;
+      box-shadow: 0 2px 16px rgba(200,170,110,0.25);
     }
-    .btn-primary:hover  { background: #3b7de8; }
+    .btn-primary:hover { opacity: 0.9; }
     .btn-primary:active { transform: scale(0.98); }
-    .btn-primary.sm { padding: 7px 12px; font-size: 13px; width: auto; }
-
-    .btn-ghost {
-      background: transparent; color: var(--text-muted);
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      padding: 7px 12px; font-size: 13px; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 5px;
-      font-family: var(--font); transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .btn-ghost:hover { background: var(--bg-3); color: var(--text); border-color: var(--border-hover); }
-    .btn-ghost:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-primary.sm { padding: 6px 12px; font-size: 12px; width: auto; }
+    .btn-ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 6px 11px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: var(--font); transition: all 0.15s; }
+    .btn-ghost:hover { background: var(--bg-3); color: var(--text); border-color: var(--border-h); }
+    .btn-ghost:disabled { opacity: 0.3; cursor: not-allowed; }
     .btn-ghost.sm { padding: 5px 10px; font-size: 12px; }
-    .btn-ghost.xs { padding: 3px 8px; font-size: 11px; }
+    .btn-ghost.xs { padding: 3px 7px; font-size: 11px; }
+    .btn-icon { background: none; border: none; cursor: pointer; color: var(--text-2); width: 28px; height: 28px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.15s; padding: 0; }
+    .btn-icon:hover { background: var(--bg-4); color: var(--text); }
+    .btn-icon.pin.pinned { color: var(--gold); }
+    .btn-icon.pin.pinned:hover { background: rgba(200,50,43,0.15); color: var(--red); }
+    .btn-icon.del:hover { background: rgba(200,50,43,0.15); color: var(--red); }
+    .btn-icon:disabled { opacity: 0.25; cursor: not-allowed; }
 
-    .error-msg {
-      display: none; font-size: 12px; color: #f07070;
-      background: rgba(224,82,82,0.1); border: 1px solid rgba(224,82,82,0.25);
-      border-radius: var(--radius-sm); padding: 8px 10px;
-    }
+    /* ── Toggle rows ── */
+    .toggle-row { display: flex; gap: 10px; align-items: flex-start; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--r-md); padding: 10px 12px; transition: opacity 0.2s; }
+    .toggle-row input[type=checkbox] { width: 14px; height: 14px; margin-top: 3px; flex-shrink: 0; cursor: pointer; accent-color: var(--gold); }
+    .toggle-row label { cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+    .tgl-title { font-size: 13px; color: var(--text); font-weight: 500; }
+    .tgl-sub { font-size: 11px; color: var(--text-2); }
 
-    .result-placeholder {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      color: var(--text-muted); gap: 14px; text-align: center; opacity: 0.4;
-    }
-    .placeholder-icon { font-size: 52px; }
-    .result-placeholder p { font-size: 14px; line-height: 1.9; }
+    /* ── Error ── */
+    .error-msg { display: none; font-size: 12px; color: #f07070; background: rgba(200,50,43,0.1); border: 1px solid rgba(200,50,43,0.25); border-radius: var(--r-sm); padding: 8px 10px; }
 
-    .result { display: none; flex-direction: column; gap: 1.25rem; }
-    .result-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 1rem; border-bottom: 1px solid var(--border);
-    }
-    .result-header h2 { font-size: 18px; font-weight: 600; }
-
-    .teams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    .team-card {
-      background: var(--bg-2); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.25rem; border-top-width: 3px;
-    }
-    .team-card.blue { border-top-color: var(--accent-blue); }
-    .team-card.red  { border-top-color: var(--accent-red); }
-
-    .team-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-    .team-avg  { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-
-    .team-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .team-list li {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border);
-    }
-    .team-list li:last-child { border-bottom: none; }
-    .player-name { color: var(--text); }
-    .player-meta { display: flex; gap: 5px; align-items: center; }
-
-    .diff-row { text-align: center; font-size: 13px; color: var(--text-muted); padding-top: 4px; }
-    .diff-row strong { color: var(--text); }
-
-    .badge { border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 500; white-space: nowrap; }
-    .rank-debutant    { background: rgba(100,100,100,0.25); color: #aaa; }
-    .rank-iron        { background: rgba(160,140,120,0.25); color: #c0b090; }
-    .rank-bronze      { background: rgba(180,100,60,0.25);  color: #d4835a; }
-    .rank-silver      { background: rgba(160,180,210,0.25); color: #a0b8d8; }
-    .rank-gold        { background: rgba(200,155,60,0.25);  color: #c89b3c; }
-    .rank-platine     { background: rgba(60,180,140,0.25);  color: #50c8a0; }
-    .rank-emeraude    { background: rgba(40,160,100,0.25);  color: #48c87a; }
-    .rank-Diamant     { background: rgba(80,130,230,0.25);  color: #88aaee; }
-    .rank-master      { background: rgba(180,80,200,0.25);  color: #d080e8; }
-    .rank-grandmaster { background: rgba(220,60,60,0.25);   color: #e87070; }
-    .rank-challenger  { background: rgba(200,155,60,0.35);  color: #f0c84a; border: 1px solid rgba(200,155,60,0.5); }
-
-    .rank-Diamant, .rank-master, .rank-grandmaster, .rank-challenger {
-      box-shadow: 0 0 8px rgba(120,160,255,0.35);
-    }
-
-    .role-top, .role-jungle, .role-mid, .role-adc, .role-supp {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
-      color: var(--text-muted); font-weight: 500; font-size: 10px; opacity: 0.85;
-    }
-    .role-top:hover     { color: #e07060; border-color: rgba(224,112,96,0.3); }
-    .role-jungle:hover  { color: #60c870; }
-    .role-mid:hover     { color: #70a8f0; }
-    .role-adc:hover     { color: #d4a840; }
-    .role-supp:hover    { color: #b888ee; }
-
-    .saved-header {
-      display: flex; align-items: center;
-      justify-content: space-between; margin-bottom: 0;
-    }
-    .saved-header .field-label { margin-bottom: 0; }
-
-    .saved-list { display: flex; flex-direction: column; gap: 5px; }
-    .saved-empty { font-size: 12px; color: var(--text-muted); text-align: center; padding: 1rem 0; line-height: 1.8; }
-
-    .saved-row {
-      display: flex; align-items: center; justify-content: space-between;
-      background: var(--bg-3); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 8px 10px; gap: 8px;
-      transition: border-color 0.15s;
-    }
-    .saved-row:hover { border-color: var(--border-hover); }
-    .saved-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-    .saved-name {
-      font-size: 13px; color: var(--text);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .saved-actions { display: flex; gap: 4px; flex-shrink: 0; }
-
-    .btn-add {
-      background: rgba(77,142,245,0.15); border: 1px solid rgba(77,142,245,0.3);
-      color: var(--accent-blue); border-radius: var(--radius-sm);
-      width: 28px; height: 28px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px; transition: background 0.15s;
-    }
+    /* ── Saved players ── */
+    .saved-hd { display: flex; align-items: center; justify-content: space-between; }
+    .saved-list { display: flex; flex-direction: column; gap: 4px; }
+    .saved-empty { font-size: 12px; color: var(--text-2); text-align: center; padding: 1.2rem 0; line-height: 1.8; opacity: 0.6; }
+    .saved-row { display: flex; align-items: center; justify-content: space-between; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 7px 10px; gap: 8px; transition: border-color 0.15s; }
+    .saved-row:hover { border-color: var(--border-h); }
+    .saved-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .saved-name { font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .saved-actions { display: flex; gap: 3px; flex-shrink: 0; }
+    .btn-add { background: rgba(77,142,245,0.15); border: 1px solid rgba(77,142,245,0.3); color: var(--blue); border-radius: var(--r-sm); width: 26px; height: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background 0.15s; }
     .btn-add:hover:not(:disabled) { background: rgba(77,142,245,0.3); }
-    .btn-add.added {
-      background: rgba(60,180,100,0.15); border-color: rgba(60,180,100,0.3);
-      color: #50c870; cursor: default;
-    }
-
-    .btn-del {
-      background: none; border: 1px solid transparent; color: var(--text-muted);
-      border-radius: var(--radius-sm); width: 28px; height: 28px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; transition: background 0.15s, color 0.15s;
-    }
-    .btn-del:hover { background: rgba(224,82,82,0.15); color: var(--accent-red); border-color: rgba(224,82,82,0.25); }
-
-    .add-saved-form {
-      display: none; flex-direction: column; gap: 7px;
-      background: var(--bg-3); border: 1px solid var(--border-hover);
-      border-radius: var(--radius-md); padding: 12px;
-    }
+    .btn-add.added { background: rgba(60,180,100,0.15); border-color: rgba(60,180,100,0.3); color: #50c870; cursor: default; }
+    .btn-add:disabled { opacity: 0.3; cursor: not-allowed; }
+    .add-saved-form { display: none; flex-direction: column; gap: 7px; background: var(--bg-3); border: 1px solid var(--border-h); border-radius: var(--r-md); padding: 11px; }
     .add-saved-actions { display: flex; gap: 6px; justify-content: flex-end; }
-
-    .edit-saved-form {
-      display: none; flex-direction: column; gap: 7px;
-      background: var(--bg); border: 1px solid var(--border-hover);
-      border-radius: var(--radius-md); padding: 10px; margin-top: 4px;
-    }
+    .edit-saved-form { display: none; flex-direction: column; gap: 7px; background: var(--bg); border: 1px solid var(--border-h); border-radius: var(--r-md); padding: 10px; margin-top: 3px; }
     .edit-saved-actions { display: flex; gap: 6px; justify-content: flex-end; }
+    .storage-status { font-size: 10px; color: var(--text-2); display: flex; align-items: center; gap: 5px; opacity: 0.7; }
+    .storage-dot { width: 5px; height: 5px; border-radius: 50%; background: #50c870; flex-shrink: 0; }
+    .storage-dot.error { background: var(--red); }
 
-    /* Storage status */
-    .storage-status {
-      font-size: 10px; color: var(--text-muted);
-      display: flex; align-items: center; gap: 5px;
+    /* ── Badges rank ── */
+    .badge { border-radius: 4px; padding: 2px 7px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+    .rank-debutant    { background: rgba(100,100,100,0.2); color: #888; }
+    .rank-iron        { background: rgba(160,140,120,0.2); color: #b0a080; }
+    .rank-bronze      { background: rgba(180,100,60,0.2);  color: #cd7f45; }
+    .rank-silver      { background: rgba(160,180,210,0.2); color: #90acd0; }
+    .rank-gold        { background: rgba(200,170,110,0.2); color: #c8aa6e; }
+    .rank-platine     { background: rgba(60,180,140,0.2);  color: #40b898; }
+    .rank-emeraude    { background: rgba(40,160,100,0.2);  color: #38b870; }
+    .rank-Diamant     { background: rgba(80,130,230,0.2);  color: #7090e0; }
+    .rank-master      { background: rgba(180,80,200,0.2);  color: #c060d8; }
+    .rank-grandmaster { background: rgba(220,60,60,0.2);   color: #e06060; }
+    .rank-challenger  { background: rgba(200,170,110,0.3); color: #e8c060; border: 1px solid rgba(200,170,110,0.5); }
+    .rank-Diamant, .rank-master, .rank-grandmaster, .rank-challenger { box-shadow: 0 0 6px rgba(120,160,255,0.2); }
+
+    /* ── Role badges ── */
+    .role-badge { border-radius: 4px; padding: 2px 7px; font-size: 10px; font-weight: 600; white-space: nowrap; border: 1px solid; }
+    .role-top     { background: rgba(224,112,96,0.12); color: #e07060; border-color: rgba(224,112,96,0.3); }
+    .role-jungle  { background: rgba(96,200,112,0.12); color: #50c870; border-color: rgba(96,200,112,0.3); }
+    .role-mid     { background: rgba(112,168,240,0.12); color: #70a8f0; border-color: rgba(112,168,240,0.3); }
+    .role-adc     { background: rgba(212,168,64,0.12); color: #d4a840; border-color: rgba(212,168,64,0.3); }
+    .role-supp    { background: rgba(184,136,238,0.12); color: #b888ee; border-color: rgba(184,136,238,0.3); }
+
+    /* ── MAIN content ── */
+    .main-inner { padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; min-height: 100%; }
+
+    /* ── Placeholder ── */
+    .placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; opacity: 0.35; padding: 3rem 0; }
+    .placeholder-icon { font-size: 56px; }
+    .placeholder p { font-size: 14px; line-height: 1.9; color: var(--text-2); }
+
+    /* ── Result ── */
+    .result { display: none; flex-direction: column; gap: 1.5rem; }
+    .result-hd { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .result-hd h2 { font-size: 20px; font-weight: 700; color: var(--text); }
+    .result-actions { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .diff-row { text-align: center; font-size: 12px; color: var(--text-2); padding: 0.25rem 0; }
+    .diff-row strong { color: var(--gold); }
+
+    /* ── Teams grid ── */
+    .teams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* ── Team section ── */
+    .team-section { display: flex; flex-direction: column; gap: 10px; }
+    .team-hd { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; }
+    .team-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .team-title.blue { color: var(--blue); }
+    .team-title.red  { color: #e05252; }
+    .team-score-lbl { font-size: 11px; color: var(--text-2); }
+
+    /* ══════════════════════════════════════════
+       PLAYER CARDS — signature design element
+    ══════════════════════════════════════════ */
+    .player-cards { display: flex; flex-direction: column; gap: 8px; }
+
+    .player-card {
+      position: relative; border-radius: var(--r-lg); overflow: hidden;
+      background: var(--bg-3); border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      min-height: 80px;
     }
-    .storage-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #50c870; flex-shrink: 0; transition: background 0.3s;
+    .player-card:hover { border-color: var(--border-h); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+
+    /* Champion art en fond */
+    .card-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center top;
+      opacity: 0.18; filter: blur(1px) saturate(0.6);
+      transition: opacity 0.3s;
     }
-    .storage-dot.saving { background: var(--accent-gold); animation: pulse 0.6s ease-in-out infinite alternate; }
-    .storage-dot.error  { background: var(--accent-red); }
-    @keyframes pulse { from { opacity: 1; } to { opacity: 0.3; } }
+    .player-card:hover .card-bg { opacity: 0.25; }
 
-    .divider { height: 1px; background: var(--border); margin: 0; }
-    .team-score { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-left: 6px; }
+    /* Bord coloré gauche selon équipe */
+    .player-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      border-radius: 3px 0 0 3px;
+    }
+    .player-card.team-blue::before { background: linear-gradient(to bottom, #4d8ef5, #2a5cc0); box-shadow: 2px 0 8px rgba(77,142,245,0.4); }
+    .player-card.team-red::before  { background: linear-gradient(to bottom, #e05252, #a02828); box-shadow: 2px 0 8px rgba(224,82,82,0.4); }
+    .player-card.team-gold::before { background: linear-gradient(to bottom, var(--gold), var(--gold-d)); box-shadow: 2px 0 8px rgba(200,170,110,0.4); }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 10px; }
+    /* Contenu de la carte */
+    .card-body {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 52px 1fr auto;
+      align-items: center; gap: 10px; padding: 10px 12px 10px 14px;
+    }
 
+    /* Portrait champion */
+    .card-champ-img {
+      width: 52px; height: 52px; border-radius: 10px;
+      object-fit: cover; object-position: top;
+      border: 1px solid rgba(255,255,255,0.12);
+      flex-shrink: 0; background: var(--bg-4);
+    }
+    .card-champ-placeholder {
+      width: 52px; height: 52px; border-radius: 10px;
+      background: var(--bg-4); border: 1px dashed var(--border-h);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-2); font-size: 20px; flex-shrink: 0;
+    }
+
+    /* Infos joueur */
+    .card-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .card-champ-name { font-size: 11px; color: var(--gold); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-champ-name.empty { color: var(--text-2); opacity: 0.5; font-weight: 400; text-transform: none; font-style: italic; }
+    .card-player-name { font-size: 16px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.01em; }
+    .card-badges { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+
+    /* Score/rank à droite */
+    .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+
+    /* ── Result in flex mode : single team full width ── */
+    .single-team { grid-column: 1 / -1; }
+    .single-team .player-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+
+    /* ─── Media queries ─── */
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 270px 1fr 240px; }
+    }
     @media (max-width: 900px) {
-      .page { grid-template-columns: 1fr; height: auto; overflow: visible; }
-      .sidebar-left, .sidebar-right { border: none; border-bottom: 1px solid var(--border); }
-      .main-content { padding: 1.25rem; }
+      .app { grid-template-columns: 1fr; height: auto; overflow: visible; }
+      .panel, .panel-right { border: none; border-bottom: 1px solid var(--border); }
+      .main { min-height: 50vh; }
       .teams-grid { grid-template-columns: 1fr; }
-      .player-row { grid-template-columns: 1fr 110px 28px 28px; }
+      .player-row { grid-template-columns: 1fr auto 28px 28px; }
     }
   </style>
 </head>
 <body>
-<div class="page">
+<div class="app">
 
-  <!-- ══ GAUCHE ══ -->
-  <aside class="sidebar-left">
-    <div class="sidebar-inner">
+  <!-- ══ LEFT PANEL ══ -->
+  <aside class="panel">
+    <div class="panel-inner">
 
-      <a href="index.html" class="brand" style="text-decoration:none;">
-        <span class="brand-icon">⚔️</span>
+      <a href="index.html" class="brand">
+        <div class="brand-icon">⚔️</div>
         <div>
-          <h1>Team Maker</h1>
-          <p>League of Legends</p>
+          <div class="brand-name">Team Maker</div>
+          <div class="brand-sub">League of Legends</div>
         </div>
       </a>
 
-      <div class="divider"></div>
+      <div class="div"></div>
 
       <div>
-        <p class="field-label">Nom de la partie</p>
+        <p class="lbl">Nom de la partie</p>
         <input type="text" id="sessionName" placeholder="Soirée LoL du vendredi">
       </div>
 
+      <div class="mode-sw">
+        <button class="mode-btn active" id="btnCustom" onclick="setMode('custom')">
+          <i class="ti ti-layout-grid"></i> Custom
+        </button>
+        <button class="mode-btn" id="btnFlex" onclick="setMode('flex')">
+          <i class="ti ti-users"></i> Flex
+        </button>
+      </div>
+
       <div>
-        <p class="field-label">
-          Joueurs
-          <span class="count-badge" id="playerCount">0 / 10</span>
-        </p>
+        <p class="lbl">Joueurs <span class="cnt" id="playerCount">0 / 10</span></p>
         <div class="player-grid" id="playerGrid"></div>
-        <button class="btn-ghost sm" onclick="addPlayer()" id="addBtn" style="margin-top:4px">
+        <button class="btn-ghost sm" onclick="addPlayer()" id="addBtn" style="margin-top:5px; width:100%; justify-content:center;">
           <i class="ti ti-plus"></i> Ajouter un joueur
         </button>
       </div>
 
-      <div class="divider"></div>
+      <div class="div"></div>
 
-      <div class="toggle-row">
+      <div class="toggle-row" id="rolesToggleRow">
         <input type="checkbox" id="rolesToggle">
         <label for="rolesToggle">
-          <span class="toggle-title">Rôles aléatoires</span>
-          <span class="toggle-sub">Top · Jungle · Mid · ADC · Supp<br>10 joueurs requis</span>
+          <span class="tgl-title">Rôles aléatoires</span>
+          <span class="tgl-sub" id="rolesToggleSub">Top · Jungle · Mid · ADC · Supp</span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <input type="checkbox" id="champToggle">
+        <label for="champToggle">
+          <span class="tgl-title">Champions aléatoires</span>
+          <span class="tgl-sub">Un champion unique par joueur</span>
         </label>
       </div>
 
@@ -366,41 +324,44 @@
     </div>
   </aside>
 
-  <!-- ══ CENTRE ══ -->
-  <main class="main-content">
-    <div class="result-placeholder" id="placeholder">
-      <i class="ti ti-sword placeholder-icon"></i>
-      <p>Configure ta partie à gauche,<br>ajoute tes joueurs et génère les équipes.</p>
-    </div>
-    <div class="result" id="result">
-      <div class="result-header">
-        <h2 id="sessionTitle"></h2>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <button class="btn-ghost sm" id="rerollRolesBtn" onclick="rerollRoles()" style="display:none" title="Garder les équipes, changer uniquement les rôles">
-            <i class="ti ti-arrows-shuffle"></i> Relancer les rôles
-          </button>
-          <button class="btn-ghost sm" onclick="generate()">
-            <i class="ti ti-refresh"></i> Regénérer
-          </button>
-        </div>
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+    <div class="main-inner">
+      <div class="placeholder" id="placeholder">
+        <div class="placeholder-icon">⚔️</div>
+        <p>Configure ta partie à gauche,<br>puis génère les équipes.</p>
       </div>
-      <div class="teams-grid" id="teamsGrid"></div>
-      <p class="diff-row" id="diffRow"></p>
+      <div class="result" id="result">
+        <div class="result-hd">
+          <h2 id="sessionTitle"></h2>
+          <div class="result-actions">
+            <button class="btn-ghost sm" id="rerollRolesBtn" onclick="rerollRoles()" style="display:none">
+              <i class="ti ti-arrows-shuffle"></i> Rôles
+            </button>
+            <button class="btn-ghost sm" id="rerollChampsBtn" onclick="rerollChampions()" style="display:none">
+              <i class="ti ti-cards"></i> Champions
+            </button>
+            <button class="btn-ghost sm" onclick="generate()">
+              <i class="ti ti-refresh"></i> Regénérer
+            </button>
+          </div>
+        </div>
+        <div class="teams-grid" id="teamsGrid"></div>
+        <p class="diff-row" id="diffRow"></p>
+      </div>
     </div>
   </main>
 
-  <!-- ══ DROITE ══ -->
-  <aside class="sidebar-right">
-    <div class="sidebar-inner">
+  <!-- ══ RIGHT PANEL ══ -->
+  <aside class="panel-right">
+    <div class="panel-inner">
 
-      <div class="saved-header">
-        <p class="field-label" style="margin-bottom:0">Joueurs enregistrés</p>
-        <button class="btn-ghost xs" onclick="openAddSaved()">
-          <i class="ti ti-plus"></i> Nouveau
-        </button>
+      <div class="saved-hd">
+        <p class="lbl" style="margin-bottom:0">Joueurs enregistrés</p>
+        <button class="btn-ghost xs" onclick="openAddSaved()"><i class="ti ti-plus"></i> Nouveau</button>
       </div>
 
-      <div class="storage-status" id="storageStatus">
+      <div class="storage-status">
         <span class="storage-dot" id="storageDot"></span>
         <span id="storageLabel">Chargement…</span>
       </div>
@@ -421,7 +382,6 @@
 </div>
 
 <script>
-/* ─── Données ─── */
 const RANKS = [
   { label: 'Débutant',    value: 0,  cls: 'rank-debutant' },
   { label: 'Iron',        value: 1,  cls: 'rank-iron' },
@@ -437,109 +397,91 @@ const RANKS = [
 ];
 const ROLES    = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
 const ROLE_CLS = { Top:'role-top', Jungle:'role-jungle', Mid:'role-mid', ADC:'role-adc', Supp:'role-supp' };
-const LS_KEY   = 'lol_teammaker_saved_v1';
+const ROLE_BADGE_CLS = { Top:'role-badge role-top', Jungle:'role-badge role-jungle', Mid:'role-badge role-mid', ADC:'role-badge role-adc', Supp:'role-badge role-supp' };
+const LS_KEY = 'lol_teammaker_saved_v1';
+const CHAMPIONS = ["Aatrox","Ahri","Akali","Akshan","Alistar","Ambessa","Amumu","Anivia","Annie","Aphelios","Ashe","AurelionSol","Aurora","Azir","Bard","Belveth","Blitzcrank","Brand","Braum","Briar","Caitlyn","Camille","Cassiopeia","Chogath","Corki","Darius","Diana","DrMundo","Draven","Ekko","Elise","Evelynn","Ezreal","Fiddlesticks","Fiora","Fizz","Galio","Gangplank","Garen","Gnar","Gragas","Graves","Gwen","Hecarim","Heimerdinger","Hwei","Illaoi","Irelia","Ivern","Janna","JarvanIV","Jax","Jayce","Jhin","Jinx","KSante","Kaisa","Kalista","Karma","Karthus","Kassadin","Katarina","Kayle","Kayn","Kennen","Khazix","Kindred","Kled","KogMaw","Leblanc","LeeSin","Leona","Lillia","Lissandra","Lucian","Lulu","Lux","Malphite","Malzahar","Maokai","MasterYi","Mel","Milio","MissFortune","MonkeyKing","Mordekaiser","Morgana","Naafiri","Nami","Nasus","Nautilus","Neeko","Nidalee","Nilah","Nocturne","Nunu","Olaf","Orianna","Ornn","Pantheon","Poppy","Pyke","Qiyana","Quinn","Rakan","Rammus","RekSai","Rell","Renata","Renekton","Rengar","Riven","Rumble","Ryze","Samira","Sejuani","Senna","Seraphine","Sett","Shaco","Shen","Shyvana","Singed","Sion","Sivir","Skarner","Smolder","Sona","Soraka","Swain","Sylas","Syndra","TahmKench","Taliyah","Talon","Taric","Teemo","Thresh","Tristana","Trundle","Tryndamere","TwistedFate","Twitch","Udyr","Urgot","Varus","Vayne","Veigar","Velkoz","Vex","Vi","Viego","Viktor","Vladimir","Volibear","Warwick","Xayah","Xerath","XinZhao","Yasuo","Yone","Yorick","Yunara","Yuumi","Zaahen","Zac","Zed","Zeri","Ziggs","Zilean","Zoe","Zyra"];
 
-/* ─── État ─── */
-let players = [], idCounter = 0;
-let lastMask = -1;
-let savedPlayers = [];
-let savedCounter = 0;
-let lastT1 = [], lastT2 = [], lastS1 = 0, lastS2 = 0; // équipes actuellement affichées
+let players = [], idCounter = 0, lastMask = -1;
+let savedPlayers = [], savedCounter = 0;
+let lastT1 = [], lastT2 = [], lastS1 = 0, lastS2 = 0;
+let lastRoles1 = null, lastRoles2 = null, lastChamps1 = null, lastChamps2 = null;
+let currentMode = 'custom';
+const MAX_CUSTOM = 10;
 
-/* ─── localStorage ─── */
+function getMaxPlayers() { return currentMode === 'flex' ? 5 : MAX_CUSTOM; }
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('btnCustom').classList.toggle('active', mode === 'custom');
+  document.getElementById('btnFlex').classList.toggle('active', mode === 'flex');
+  updateRolesToggleVisibility();
+  players = []; lastMask = -1;
+  renderGrid(); renderSaved();
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('placeholder').style.display = 'flex';
+  document.getElementById('rerollRolesBtn').style.display = 'none';
+  document.getElementById('rerollChampsBtn').style.display = 'none';
+}
+
+function updateRolesToggleVisibility() {
+  const row = document.getElementById('rolesToggleRow');
+  const sub = document.getElementById('rolesToggleSub');
+  if (currentMode === 'custom') {
+    row.style.opacity = '1'; row.style.pointerEvents = 'auto';
+    sub.textContent = 'Top · Jungle · Mid · ADC · Supp — 10 joueurs requis';
+  } else {
+    row.style.opacity = '1'; row.style.pointerEvents = 'auto';
+    sub.textContent = 'Top · Jungle · Mid · ADC · Supp — 5 joueurs requis';
+  }
+}
+
+/* ─── Storage ─── */
 function loadFromStorage() {
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw) {
-      const data = JSON.parse(raw);
-      savedPlayers = data.players || [];
-      savedCounter = data.counter || savedPlayers.length;
-    } else {
-      savedPlayers = [];
-      savedCounter = 0;
-    }
-  } catch (e) {
-    savedPlayers = [];
-    savedCounter = 0;
-  }
-  updateStorageStatus();
-  renderSaved();
+    if (raw) { const d = JSON.parse(raw); savedPlayers = d.players||[]; savedCounter = d.counter||savedPlayers.length; }
+    else { savedPlayers = []; savedCounter = 0; }
+  } catch(e) { savedPlayers = []; savedCounter = 0; }
+  updateStorageStatus(); renderSaved();
 }
-
 function persistSaved() {
-  try {
-    localStorage.setItem(LS_KEY, JSON.stringify({
-      players: savedPlayers,
-      counter: savedCounter
-    }));
-    updateStorageStatus();
-  } catch (e) {
-    setStorageDot('error');
-    document.getElementById('storageLabel').textContent = 'Erreur de sauvegarde';
-  }
+  try { localStorage.setItem(LS_KEY, JSON.stringify({players:savedPlayers,counter:savedCounter})); updateStorageStatus(); }
+  catch(e) { document.getElementById('storageDot').className='storage-dot error'; }
 }
-
 function updateStorageStatus() {
-  setStorageDot('ok');
+  document.getElementById('storageDot').className = 'storage-dot';
   const n = savedPlayers.length;
-  document.getElementById('storageLabel').textContent =
-    n === 0 ? 'Aucun joueur enregistré'
-            : `${n} joueur${n > 1 ? 's' : ''} enregistré${n > 1 ? 's' : ''} — sauvegardé localement`;
-}
-
-function setStorageDot(state) {
-  const dot = document.getElementById('storageDot');
-  dot.className = 'storage-dot' + (state === 'error' ? ' error' : '');
+  document.getElementById('storageLabel').textContent = n === 0 ? 'Aucun joueur enregistré' : `${n} joueur${n>1?'s':''} enregistré${n>1?'s':''}`;
 }
 
 /* ─── Helpers ─── */
 function rankInfo(val) { return RANKS.find(r => r.value === val) || RANKS[0]; }
-function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function rankOptions(sel) {
-  return RANKS.map(r =>
-    `<option value="${r.value}"${r.value === sel ? ' selected' : ''}>${r.label}</option>`
-  ).join('');
-}
-function shuffle(a) {
-  const b = [...a];
-  for (let i = b.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [b[i], b[j]] = [b[j], b[i]];
-  }
-  return b;
-}
-function popcount(n) { let c = 0; while (n) { c += n & 1; n >>= 1; } return c; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function rankOptions(sel) { return RANKS.map(r => `<option value="${r.value}"${r.value===sel?' selected':''}>${r.label}</option>`).join(''); }
+function shuffle(a) { const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]; } return b; }
+function popcount(n) { let c=0; while(n){ c+=n&1; n>>=1; } return c; }
+function pickChampions(count) { return shuffle([...CHAMPIONS]).slice(0,count); }
 
-/* ─── Joueurs (gauche) ─── */
-function addPlayer(name = '', rank = 3) {
-  if (players.length >= 10) return;
+/* ─── Players ─── */
+function addPlayer(name='', rank=3) {
+  if (players.length >= getMaxPlayers()) return;
   players.push({ id: idCounter++, name, rank });
-  lastMask = -1;
-  renderGrid();
-  renderSaved();
+  lastMask = -1; renderGrid(); renderSaved();
 }
 function removePlayer(id) {
   players = players.filter(p => p.id !== id);
-  lastMask = -1;
-  renderGrid();
-  renderSaved();
+  lastMask = -1; renderGrid(); renderSaved();
 }
 function updateName(id, val) {
-  const p = players.find(p => p.id === id);
-  if (p) {
-    p.name = val;
-    const alreadySaved = savedPlayers.some(s => s.name.toLowerCase() === val.trim().toLowerCase());
-    const pinBtn = document.querySelector(`button[onclick="pinPlayer(${id})"]`);
-    if (pinBtn) {
-      pinBtn.disabled = val.trim() === '' || alreadySaved;
-      pinBtn.className = 'pin-btn' + (alreadySaved ? ' pinned' : '');
-      pinBtn.title = alreadySaved ? 'Déjà enregistré' : val.trim() ? 'Enregistrer ce joueur' : 'Entrez un nom d\x27abord';
-      pinBtn.innerHTML = `<i class="ti ${alreadySaved ? 'ti-bookmark-filled' : 'ti-bookmark'}"></i>`;
-    }
+  const p = players.find(p => p.id === id); if (!p) return;
+  p.name = val;
+  const saved = savedPlayers.some(s => s.name.toLowerCase() === val.trim().toLowerCase());
+  const btn = document.querySelector(`button[onclick="pinPlayer(${id})"]`);
+  if (btn) {
+    btn.disabled = val.trim()==='' && !saved;
+    btn.className = 'btn-icon pin' + (saved ? ' pinned' : '');
+    btn.title = saved ? 'Retirer des enregistrés' : val.trim() ? 'Enregistrer' : "Entrez un nom";
+    btn.innerHTML = `<i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i>`;
   }
 }
 function updateRank(id, val) { const p = players.find(p => p.id === id); if (p) p.rank = parseInt(val); }
@@ -548,45 +490,40 @@ function renderGrid() {
   const grid = document.getElementById('playerGrid');
   grid.innerHTML = '';
   players.forEach((p, i) => {
-    const alreadySaved = savedPlayers.some(s => s.name.toLowerCase() === p.name.trim().toLowerCase());
-    const canPin = p.name.trim() !== '' && !alreadySaved;
+    const saved = savedPlayers.some(s => s.name.toLowerCase() === p.name.trim().toLowerCase());
     const row = document.createElement('div');
     row.className = 'player-row';
     row.innerHTML = `
-      <input type="text" placeholder="Joueur ${i + 1}" value="${esc(p.name)}"
-        oninput="updateName(${p.id}, this.value)">
+      <input type="text" placeholder="Joueur ${i+1}" value="${esc(p.name)}" oninput="updateName(${p.id}, this.value)">
       <select onchange="updateRank(${p.id}, this.value)">${rankOptions(p.rank)}</select>
-      <button class="pin-btn${alreadySaved ? ' pinned' : ''}"
-        onclick="pinPlayer(${p.id})"
-        ${alreadySaved ? 'disabled' : ''}
-        title="${alreadySaved ? 'Déjà enregistré' : 'Enregistrer ce joueur'}">
-        <i class="ti ${alreadySaved ? 'ti-bookmark-filled' : 'ti-bookmark'}"></i>
+      <button class="btn-icon pin${saved?' pinned':''}" onclick="pinPlayer(${p.id})"
+        title="${saved?'Retirer des enregistrés':p.name.trim()?'Enregistrer':"Entrez un nom"}"
+        ${!p.name.trim()&&!saved?'disabled':''}>
+        <i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i>
       </button>
-      <button class="remove-btn" onclick="removePlayer(${p.id})" aria-label="Retirer">
+      <button class="btn-icon del" onclick="removePlayer(${p.id})" aria-label="Retirer">
         <i class="ti ti-x"></i>
       </button>`;
     grid.appendChild(row);
   });
-  document.getElementById('playerCount').textContent = `${players.length} / 10`;
-  document.getElementById('addBtn').disabled = players.length >= 10;
+  const maxP = getMaxPlayers();
+  document.getElementById('playerCount').textContent = `${players.length} / ${maxP}`;
+  document.getElementById('addBtn').disabled = players.length >= maxP;
 }
 
 function pinPlayer(id) {
-  const p = players.find(p => p.id === id);
-  if (!p || !p.name.trim()) return;
-  if (savedPlayers.some(s => s.name.toLowerCase() === p.name.trim().toLowerCase())) return;
-  savedPlayers.push({ id: 's' + savedCounter++, name: p.name.trim(), rank: p.rank });
-  persistSaved();
-  renderSaved();
-  renderGrid(); // met à jour l'icône en "déjà enregistré"
+  const p = players.find(p => p.id === id); if (!p || !p.name.trim()) return;
+  const idx = savedPlayers.findIndex(s => s.name.toLowerCase() === p.name.trim().toLowerCase());
+  if (idx !== -1) savedPlayers.splice(idx, 1);
+  else savedPlayers.push({ id:'s'+savedCounter++, name:p.name.trim(), rank:p.rank });
+  persistSaved(); renderSaved(); renderGrid();
 }
 
-/* ─── Joueurs sauvegardés (droite) ─── */
+/* ─── Saved ─── */
 function renderSaved() {
   const list = document.getElementById('savedList');
   if (!savedPlayers.length) {
-    list.innerHTML = `<p class="saved-empty">Aucun joueur enregistré.<br>
-      <span style="font-size:11px;opacity:0.6">Clique sur « Nouveau » pour en ajouter.</span></p>`;
+    list.innerHTML = `<p class="saved-empty">Aucun joueur enregistré.<br><span style="font-size:11px">Utilise 🔖 pour épingler.</span></p>`;
     return;
   }
   list.innerHTML = savedPlayers.map(sp => {
@@ -599,196 +536,186 @@ function renderSaved() {
           <span class="badge ${ri.cls}">${ri.label}</span>
         </div>
         <div class="saved-actions">
-          <button class="btn-add${alreadyIn ? ' added' : ''}"
-            onclick="addFromSaved('${sp.id}')"
-            ${alreadyIn || players.length >= 10 ? 'disabled' : ''}
-            title="${alreadyIn ? 'Déjà dans la liste' : 'Ajouter à la partie'}">
-            <i class="ti ${alreadyIn ? 'ti-check' : 'ti-plus'}"></i>
+          <button class="btn-add${alreadyIn?' added':''}" onclick="addFromSaved('${sp.id}')"
+            ${alreadyIn||players.length>=getMaxPlayers()?'disabled':''} title="${alreadyIn?'Déjà dans la liste':'Ajouter'}">
+            <i class="ti ${alreadyIn?'ti-check':'ti-plus'}"></i>
           </button>
-          <button class="btn-ghost xs" onclick="openEditSaved('${sp.id}')" title="Modifier">
-            <i class="ti ti-pencil"></i>
-          </button>
-          <button class="btn-del" onclick="deleteSaved('${sp.id}')" title="Supprimer">
-            <i class="ti ti-trash"></i>
-          </button>
+          <button class="btn-icon" onclick="openEditSaved('${sp.id}')" title="Modifier"><i class="ti ti-pencil"></i></button>
+          <button class="btn-icon del" onclick="deleteSaved('${sp.id}')" title="Supprimer"><i class="ti ti-trash"></i></button>
         </div>
       </div>
       <div class="edit-saved-form" id="edit-${sp.id}">
-        <input type="text" id="edit-name-${sp.id}" value="${esc(sp.name)}" placeholder="Nom du joueur">
+        <input type="text" id="edit-name-${sp.id}" value="${esc(sp.name)}" placeholder="Nom">
         <select id="edit-rank-${sp.id}">${rankOptions(sp.rank)}</select>
         <div class="edit-saved-actions">
           <button class="btn-ghost sm" onclick="closeEditSaved('${sp.id}')">Annuler</button>
-          <button class="btn-primary sm" onclick="applyEditSaved('${sp.id}')">Enregistrer</button>
+          <button class="btn-primary sm" onclick="applyEditSaved('${sp.id}')">OK</button>
         </div>
       </div>`;
   }).join('');
 }
-
-function addFromSaved(sid) {
-  if (players.length >= 10) return;
-  const sp = savedPlayers.find(s => s.id === sid);
-  if (!sp) return;
-  addPlayer(sp.name, sp.rank);
-}
-
-function deleteSaved(sid) {
-  savedPlayers = savedPlayers.filter(s => s.id !== sid);
-  persistSaved();
-  renderSaved();
-}
-
-function openAddSaved() {
-  document.getElementById('addSavedForm').style.display = 'flex';
-  document.getElementById('savedName').focus();
-}
-function closeAddSaved() {
-  document.getElementById('addSavedForm').style.display = 'none';
-  document.getElementById('savedName').value = '';
-}
+function addFromSaved(sid) { if(players.length>=getMaxPlayers()) return; const sp=savedPlayers.find(s=>s.id===sid); if(sp) addPlayer(sp.name,sp.rank); }
+function deleteSaved(sid) { savedPlayers=savedPlayers.filter(s=>s.id!==sid); persistSaved(); renderSaved(); }
+function openAddSaved() { document.getElementById('addSavedForm').style.display='flex'; document.getElementById('savedName').focus(); }
+function closeAddSaved() { document.getElementById('addSavedForm').style.display='none'; document.getElementById('savedName').value=''; }
 function saveNewPlayer() {
-  const name = document.getElementById('savedName').value.trim();
-  const rank = parseInt(document.getElementById('savedRank').value);
-  if (!name) { document.getElementById('savedName').focus(); return; }
-  if (savedPlayers.some(s => s.name.toLowerCase() === name.toLowerCase())) {
-    const input = document.getElementById('savedName');
-    input.style.borderColor = 'var(--accent-red)';
-    input.placeholder = 'Ce nom existe déjà !';
-    setTimeout(() => {
-      input.style.borderColor = '';
-      input.placeholder = 'Nom du joueur';
-    }, 1500);
-    return;
+  const name=document.getElementById('savedName').value.trim();
+  const rank=parseInt(document.getElementById('savedRank').value);
+  if(!name) { document.getElementById('savedName').focus(); return; }
+  if(savedPlayers.some(s=>s.name.toLowerCase()===name.toLowerCase())) {
+    const inp=document.getElementById('savedName'); inp.style.borderColor='var(--red)'; inp.placeholder='Nom déjà utilisé !';
+    setTimeout(()=>{ inp.style.borderColor=''; inp.placeholder='Nom du joueur'; },1500); return;
   }
-  savedPlayers.push({ id: 's' + savedCounter++, name, rank });
-  persistSaved();
-  closeAddSaved();
-  renderSaved();
+  savedPlayers.push({id:'s'+savedCounter++,name,rank}); persistSaved(); closeAddSaved(); renderSaved();
 }
-
-function openEditSaved(sid) {
-  document.querySelectorAll('.edit-saved-form').forEach(el => el.style.display = 'none');
-  const form = document.getElementById('edit-' + sid);
-  if (form) { form.style.display = 'flex'; document.getElementById('edit-name-' + sid).focus(); }
-}
-function closeEditSaved(sid) {
-  const form = document.getElementById('edit-' + sid);
-  if (form) form.style.display = 'none';
-}
+function openEditSaved(sid) { document.querySelectorAll('.edit-saved-form').forEach(el=>el.style.display='none'); const f=document.getElementById('edit-'+sid); if(f){ f.style.display='flex'; document.getElementById('edit-name-'+sid).focus(); } }
+function closeEditSaved(sid) { const f=document.getElementById('edit-'+sid); if(f) f.style.display='none'; }
 function applyEditSaved(sid) {
-  const name = document.getElementById('edit-name-' + sid).value.trim();
-  const rank = parseInt(document.getElementById('edit-rank-' + sid).value);
-  if (!name) return;
-  const sp = savedPlayers.find(s => s.id === sid);
-  if (!sp) return;
-  sp.name = name;
-  sp.rank = rank;
-  persistSaved();
-  closeEditSaved(sid);
-  renderSaved();
-  renderGrid();
+  const name=document.getElementById('edit-name-'+sid).value.trim();
+  const rank=parseInt(document.getElementById('edit-rank-'+sid).value);
+  if(!name) return;
+  const sp=savedPlayers.find(s=>s.id===sid); if(!sp) return;
+  sp.name=name; sp.rank=rank;
+  persistSaved(); closeEditSaved(sid); renderSaved(); renderGrid();
 }
 
-/* ─── Algorithme ─── */
+/* ─── Algorithm ─── */
 function bestSplit(arr) {
-  const n = arr.length, half = n / 2;
-  let bestDiff = Infinity;
-  const bestMasks = [];
-  for (let mask = 0; mask < (1 << n); mask++) {
-    if (popcount(mask) !== half) continue;
-    let s1 = 0, s2 = 0;
-    for (let i = 0; i < n; i++) (mask & (1 << i)) ? s1 += arr[i].rank : s2 += arr[i].rank;
-    const diff = Math.abs(s1 - s2);
-    if (diff < bestDiff) { bestDiff = diff; bestMasks.length = 0; bestMasks.push(mask); }
-    else if (diff === bestDiff) { bestMasks.push(mask); }
+  const n=arr.length, half=n/2; let bestDiff=Infinity; const bestMasks=[];
+  for(let mask=0;mask<(1<<n);mask++) {
+    if(popcount(mask)!==half) continue;
+    let s1=0,s2=0;
+    for(let i=0;i<n;i++) (mask&(1<<i))?s1+=arr[i].rank:s2+=arr[i].rank;
+    const diff=Math.abs(s1-s2);
+    if(diff<bestDiff){ bestDiff=diff; bestMasks.length=0; bestMasks.push(mask); }
+    else if(diff===bestDiff) bestMasks.push(mask);
   }
-  const seen = new Set(), unique = [];
-  for (const mask of bestMasks) {
-    const full = (1 << n) - 1;
-    const key = Math.min(mask, (~mask) & full);
-    if (!seen.has(key)) { seen.add(key); unique.push(mask); }
-  }
-  let pool = unique.filter(m => m !== lastMask);
-  if (pool.length === 0) pool = unique;
-  const chosen = pool[Math.floor(Math.random() * pool.length)];
-  lastMask = chosen;
-  const t1 = [], t2 = [];
-  for (let i = 0; i < n; i++) (chosen & (1 << i)) ? t1.push(arr[i]) : t2.push(arr[i]);
-  return [t1, t2, bestDiff, unique.length];
+  const seen=new Set(), unique=[];
+  for(const mask of bestMasks){ const full=(1<<n)-1; const key=Math.min(mask,(~mask)&full); if(!seen.has(key)){ seen.add(key); unique.push(mask); } }
+  let pool=unique.filter(m=>m!==lastMask); if(!pool.length) pool=unique;
+  const chosen=pool[Math.floor(Math.random()*pool.length)];
+  lastMask=chosen;
+  const t1=[],t2=[];
+  for(let i=0;i<n;i++) (chosen&(1<<i))?t1.push(arr[i]):t2.push(arr[i]);
+  return [t1,t2,bestDiff,unique.length];
 }
 
-/* ─── Génération ─── */
+/* ─── Generate ─── */
 function generate() {
-  document.getElementById('errorMsg').style.display = 'none';
-  const valid = players.filter(p => p.name.trim());
-  if (valid.length < 2)       return showError('Ajoute au moins 2 joueurs avec un nom.');
-  if (valid.length % 2 !== 0) return showError('Le nombre de joueurs doit être pair.');
-  const useRoles = document.getElementById('rolesToggle').checked;
-  if (useRoles && valid.length / 2 !== 5) return showError('Les rôles nécessitent exactement 10 joueurs.');
+  document.getElementById('errorMsg').style.display='none';
+  const valid=players.filter(p=>p.name.trim());
+  const useRoles=document.getElementById('rolesToggle').checked;
+  const useChamps=document.getElementById('champToggle').checked;
 
-  const [t1, t2, diff, totalCombos] = bestSplit(valid.map(p => ({ ...p, rank: parseInt(p.rank) })));
-  const roles1 = useRoles ? shuffle(ROLES) : null;
-  const roles2 = useRoles ? shuffle(ROLES) : null;
-
-  const name = document.getElementById('sessionName').value.trim();
-  document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Résultat';
-
-  const s1 = t1.reduce((a, p) => a + p.rank, 0);
-  const s2 = t2.reduce((a, p) => a + p.rank, 0);
-
-  // Mémoriser les équipes pour pouvoir régénérer uniquement les rôles
-  lastT1 = t1; lastT2 = t2; lastS1 = s1; lastS2 = s2;
-
-  document.getElementById('teamsGrid').innerHTML =
-    buildTeam('🔵 Équipe 1', t1, s1, roles1, 'blue') +
-    buildTeam('🔴 Équipe 2', t2, s2, roles2, 'red');
-
-  const comboTxt = totalCombos > 1
-    ? ` · ${totalCombos} combinaison${totalCombos > 1 ? 's' : ''} équitable${totalCombos > 1 ? 's' : ''}`
-    : '';
-  document.getElementById('diffRow').innerHTML =
-    `Différence totale : <strong>${diff} point${diff !== 1 ? 's' : ''}</strong>${comboTxt}`;
-
-  document.getElementById('placeholder').style.display = 'none';
-  document.getElementById('result').style.display = 'flex';
-  document.getElementById('rerollRolesBtn').style.display = useRoles ? 'inline-flex' : 'none';
+  if (currentMode === 'flex') {
+    if (valid.length < 1) return showError('Ajoute au moins 1 joueur.');
+    if (valid.length > 5) return showError('Maximum 5 joueurs en mode Flex.');
+    if (useRoles && valid.length !== 5) return showError('Les rôles nécessitent 5 joueurs.');
+    const roles = useRoles ? shuffle(ROLES) : null;
+    const champs = useChamps ? pickChampions(valid.length) : null;
+    const score = valid.reduce((a,p)=>a+parseInt(p.rank),0);
+    lastT1=valid; lastT2=[]; lastS1=score; lastS2=0;
+    lastRoles1=roles; lastRoles2=null; lastChamps1=champs; lastChamps2=null;
+    const name=document.getElementById('sessionName').value.trim();
+    document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Ton équipe Flex';
+    document.getElementById('teamsGrid').innerHTML =
+      `<div class="single-team">${buildTeamSection('⚔️ Ton équipe', valid, score, roles, champs, 'gold')}</div>`;
+    document.getElementById('diffRow').innerHTML = '';
+  } else {
+    if (valid.length < 2) return showError('Ajoute au moins 2 joueurs.');
+    if (valid.length % 2 !== 0) return showError('Le nombre de joueurs doit être pair.');
+    if (useRoles && valid.length !== 10) return showError('Les rôles nécessitent exactement 10 joueurs.');
+    const [t1,t2,diff,combos]=bestSplit(valid.map(p=>({...p,rank:parseInt(p.rank)})));
+    const roles1=useRoles?shuffle(ROLES):null, roles2=useRoles?shuffle(ROLES):null;
+    let champs1=null, champs2=null;
+    if (useChamps) { const pick=pickChampions(t1.length+t2.length); champs1=pick.slice(0,t1.length); champs2=pick.slice(t1.length); }
+    const name=document.getElementById('sessionName').value.trim();
+    document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Résultat';
+    const s1=t1.reduce((a,p)=>a+p.rank,0), s2=t2.reduce((a,p)=>a+p.rank,0);
+    lastT1=t1; lastT2=t2; lastS1=s1; lastS2=s2;
+    lastRoles1=roles1; lastRoles2=roles2; lastChamps1=champs1; lastChamps2=champs2;
+    document.getElementById('teamsGrid').innerHTML =
+      buildTeamSection('🔵 Équipe 1',t1,s1,roles1,champs1,'blue') +
+      buildTeamSection('🔴 Équipe 2',t2,s2,roles2,champs2,'red');
+    const ctxt=combos>1?` · ${combos} combinaisons équitables`:'';
+    document.getElementById('diffRow').innerHTML = `Diff : <strong>${diff} pt${diff!==1?'s':''}</strong>${ctxt}`;
+    document.getElementById('rerollRolesBtn').style.display = useRoles?'inline-flex':'none';
+    document.getElementById('rerollChampsBtn').style.display = useChamps?'inline-flex':'none';
+  }
+  document.getElementById('placeholder').style.display='none';
+  document.getElementById('result').style.display='flex';
+  document.getElementById('rerollRolesBtn').style.display = useRoles?'inline-flex':'none';
+  document.getElementById('rerollChampsBtn').style.display = useChamps?'inline-flex':'none';
 }
 
 function rerollRoles() {
-  if (!lastT1.length) return;
-  const roles1 = shuffle(ROLES);
-  const roles2 = shuffle(ROLES);
-  document.getElementById('teamsGrid').innerHTML =
-    buildTeam('🔵 Équipe 1', lastT1, lastS1, roles1, 'blue') +
-    buildTeam('🔴 Équipe 2', lastT2, lastS2, roles2, 'red');
+  if(!lastT1.length) return;
+  if(currentMode==='flex') {
+    lastRoles1=shuffle(ROLES);
+    document.getElementById('teamsGrid').innerHTML =
+      `<div class="single-team">${buildTeamSection('⚔️ Ton équipe',lastT1,lastS1,lastRoles1,lastChamps1,'gold')}</div>`;
+  } else {
+    lastRoles1=shuffle(ROLES); lastRoles2=shuffle(ROLES);
+    document.getElementById('teamsGrid').innerHTML =
+      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue')+
+      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red');
+  }
+}
+function rerollChampions() {
+  if(!lastT1.length) return;
+  if(currentMode==='flex') {
+    lastChamps1=pickChampions(lastT1.length);
+    document.getElementById('teamsGrid').innerHTML =
+      `<div class="single-team">${buildTeamSection('⚔️ Ton équipe',lastT1,lastS1,lastRoles1,lastChamps1,'gold')}</div>`;
+  } else {
+    const pick=pickChampions(lastT1.length+lastT2.length);
+    lastChamps1=pick.slice(0,lastT1.length); lastChamps2=pick.slice(lastT1.length);
+    document.getElementById('teamsGrid').innerHTML =
+      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue')+
+      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red');
+  }
 }
 
-function showError(msg) {
-  const el = document.getElementById('errorMsg');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
+function showError(msg) { const el=document.getElementById('errorMsg'); el.textContent=msg; el.style.display='block'; }
 
-function buildTeam(title, players, score, roles, color) {
-  const avg = rankInfo(Math.round(score / players.length));
-  const items = players.map((p, i) => {
+/* ─── Build team section ─── */
+function buildTeamSection(title, players, score, roles, champs, color) {
+  const avg = rankInfo(Math.round(score/players.length));
+  const cards = players.map((p,i) => {
     const ri = rankInfo(p.rank);
-    const rb = roles ? `<span class="badge ${ROLE_CLS[roles[i]]}">${roles[i]}</span>` : '';
-    return `<li>
-      <span class="player-name">${esc(p.name)}</span>
-      <span class="player-meta">${rb}<span class="badge ${ri.cls}">${ri.label}</span></span>
-    </li>`;
+    const champ = champs ? champs[i] : null;
+    const role  = roles  ? roles[i]  : null;
+    const bg = champ ? `style="background-image:url('icon_champion/${champ}_0.jpg')"` : '';
+    const champImg = champ
+      ? `<img class="card-champ-img" src="icon_champion/${champ}_0.jpg" alt="${champ}" onerror="this.style.display='none'">`
+      : '';
+    const champName = champ ? `<span class="card-champ-name">${champ}</span>` : '';
+    const roleB = role ? `<span class="badge ${ROLE_BADGE_CLS[role]}">${role}</span>` : '';
+    const bodyGrid = champ ? 'grid-template-columns:52px 1fr' : 'grid-template-columns:1fr';
+    return `<div class="player-card team-${color}">
+      <div class="card-bg" ${bg}></div>
+      <div class="card-body" style="${bodyGrid}">
+        ${champImg}
+        <div class="card-info">
+          ${champName}
+          <span class="card-player-name">${esc(p.name)}</span>
+          <div class="card-badges">${roleB}<span class="badge ${ri.cls}">${ri.label}</span></div>
+        </div>
+      </div>
+    </div>`;
   }).join('');
-  return `<div class="team-card ${color}">
-    <p class="team-name">${title} <span class="team-score">— ${score} pts</span></p>
-    <p class="team-avg">Rang moyen : ${avg.label}</p>
-    <ul class="team-list">${items}</ul>
+  return `<div class="team-section">
+    <div class="team-hd">
+      <span class="team-title ${color}">${title}</span>
+      <span class="team-score-lbl">${score} pts · moy. ${avg.label}</span>
+    </div>
+    <div class="player-cards">${cards}</div>
   </div>`;
 }
 
 /* ─── Init ─── */
 document.getElementById('savedRank').innerHTML = rankOptions(3);
-renderGrid();
-loadFromStorage();
+renderGrid(); loadFromStorage(); updateRolesToggleVisibility();
 </script>
 </body>
 </html>

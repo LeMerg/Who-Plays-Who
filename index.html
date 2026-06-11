@@ -9,328 +9,172 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #0f1117;
-      --bg-2:        #181c25;
-      --bg-3:        #1e2330;
-      --border:      rgba(255,255,255,0.08);
-      --text:        #e8eaf0;
-      --text-muted:  #7a7f94;
-      --accent-blue: #4d8ef5;
-      --accent-gold: #c89b3c;
-      --accent-red:  #e05252;
-      --font:        system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --bg:     #080B0F;
+      --bg-2:   #0E1218;
+      --bg-3:   #141820;
+      --text:   #E8E4DC;
+      --text-2: #8090A0;
+      --gold:   #C8AA6E;
+      --gold-d: #9A7C40;
+      --red:    #FF4655;
+      --font:   'Segoe UI', system-ui, sans-serif;
     }
 
-    html, body {
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 15px;
-      line-height: 1.6;
-    }
+    html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.6; }
 
-    /* ── Fond animé ── */
+    /* Ambient glow */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 20% 20%, rgba(77,142,245,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(200,155,60,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+        radial-gradient(ellipse 60% 40% at 25% 30%, rgba(200,170,110,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 75% 70%, rgba(255,70,85,0.04) 0%, transparent 70%);
     }
 
-    /* ── Layout ── */
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
 
     /* ── Nav ── */
     nav {
-      display: flex;
-      align-items: center;
-      padding: 1.25rem 2.5rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(15,17,23,0.8);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      display: flex; align-items: center; padding: 1.1rem 2.5rem;
+      border-bottom: 1px solid rgba(200,170,110,0.1);
+      background: rgba(8,11,15,0.85); backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 10;
     }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--gold-d), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; box-shadow: 0 2px 10px rgba(200,170,110,0.3);
     }
-    .nav-icon { font-size: 22px; }
-    .nav-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 0.01em;
-    }
-    .nav-sub {
-      font-size: 10px;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
+    .nav-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
+    .nav-sub { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1px; }
 
     /* ── Hero ── */
     .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 5rem 1.5rem 4rem;
-      gap: 2rem;
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 5rem 1.5rem 3rem; gap: 1.5rem;
     }
 
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent-gold);
-      background: rgba(200,155,60,0.1);
-      border: 1px solid rgba(200,155,60,0.25);
-      border-radius: 999px;
-      padding: 5px 14px;
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--gold); background: rgba(200,170,110,0.08);
+      border: 1px solid rgba(200,170,110,0.2); border-radius: 999px; padding: 5px 14px;
     }
 
     .hero-title {
-      font-size: clamp(2.4rem, 6vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      max-width: 700px;
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem); font-weight: 800;
+      line-height: 1.08; letter-spacing: -0.025em; color: var(--text);
+      max-width: 680px;
     }
-    .hero-title span {
-      background: linear-gradient(90deg, var(--accent-blue), #7ab4ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(95deg, var(--gold), #e8c880, var(--red));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
 
-    .hero-desc {
-      font-size: 1rem;
-      color: var(--text-muted);
-      max-width: 480px;
-      line-height: 1.75;
-    }
+    .hero-desc { font-size: 1rem; color: var(--text-2); max-width: 460px; line-height: 1.8; }
 
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 0.5rem;
-    }
-
-    .btn-primary {
-      background: var(--accent-blue);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 13px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font);
-      text-decoration: none;
-      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-      box-shadow: 0 4px 20px rgba(77,142,245,0.3);
-    }
-    .btn-primary:hover {
-      background: #3b7de8;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(77,142,245,0.4);
-    }
-    .btn-primary:active { transform: scale(0.98); }
-
-    /* ── Cards outils ── */
-    .tools-section {
-      padding: 0 1.5rem 5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .section-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-    }
-
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      width: 100%;
-      max-width: 900px;
-    }
+    /* ── Cards ── */
+    .tools { padding: 0 1.5rem 5rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+    .tools-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-2); }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; width: 100%; max-width: 860px; }
 
     .tool-card {
-      background: var(--bg-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
-      text-decoration: none;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; gap: 1rem;
+      background: var(--bg-2); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px; padding: 1.75rem; text-decoration: none; color: var(--text);
+      position: relative; overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
     }
-    .tool-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-blue), transparent);
-      opacity: 0;
-      transition: opacity 0.2s;
+    .tool-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      opacity: 0; transition: opacity 0.2s;
     }
-    .tool-card:hover {
-      border-color: rgba(77,142,245,0.35);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    }
-    .tool-card:hover::before { opacity: 1; }
+    .tool-card.lol::after  { background: linear-gradient(90deg, var(--gold), transparent); }
+    .tool-card.valo::after { background: linear-gradient(90deg, var(--red), transparent); }
+    .tool-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+    .tool-card.lol:hover  { border-color: rgba(200,170,110,0.3); }
+    .tool-card.valo:hover { border-color: rgba(255,70,85,0.3); }
+    .tool-card:hover::after { opacity: 1; }
 
-    .tool-icon {
-      font-size: 28px;
-      width: 48px; height: 48px;
-      background: var(--bg-3);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+    .card-icon {
+      width: 52px; height: 52px; border-radius: 13px;
       display: flex; align-items: center; justify-content: center;
+      font-size: 24px; border: 1px solid rgba(255,255,255,0.08);
     }
-    .tool-name {
-      font-size: 15px;
-      font-weight: 600;
-    }
-    .tool-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-    .tool-cta {
-      font-size: 12px;
-      color: var(--accent-blue);
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    .tool-card.lol  .card-icon { background: rgba(200,170,110,0.1); }
+    .tool-card.valo .card-icon { background: rgba(255,70,85,0.1); }
+
+    .card-name { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+    .card-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+    .card-cta {
+      font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px;
       margin-top: auto;
     }
+    .tool-card.lol  .card-cta { color: var(--gold); }
+    .tool-card.valo .card-cta { color: var(--red); }
 
     /* ── Footer ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.25rem 2.5rem;
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 1.1rem 2.5rem; text-align: center; font-size: 12px; color: var(--text-2); }
 
-    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; }
 
     @media (max-width: 600px) {
       nav { padding: 1rem 1.25rem; }
-      .hero { padding: 3rem 1.25rem 3rem; }
-      .tools-section { padding: 0 1.25rem 3rem; }
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .tools { padding: 0 1.25rem 3rem; }
     }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- Nav -->
   <nav>
     <a class="nav-brand" href="index.html">
-      <span class="nav-icon">⚔️</span>
+      <div class="nav-icon">⚔️</div>
       <div>
         <div class="nav-title">Team Maker</div>
-        <div class="nav-sub">Pour vos soirées entre amis</div>
+        <div class="nav-sub">Pour vos soirées</div>
       </div>
     </a>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
-    <span class="hero-eyebrow">
-      <i class="ti ti-shield-half"></i>
-      Outils pour tes soirées
-    </span>
-
-    <h1 class="hero-title">
-      Génère des équipes<br><span>équilibrées</span> en un clic
-    </h1>
-
+    <span class="eyebrow"><i class="ti ti-shield-half"></i> Outils pour tes soirées gaming</span>
+    <h1 class="hero-title">Des équipes <em>équilibrées</em><br>en un clic</h1>
     <p class="hero-desc">
-      Team Maker répartit automatiquement tes joueurs en deux équipes aussi équilibrées que possible selon leur rang — plus de disputes pour savoir qui joue avec qui.
+      Team Maker répartit automatiquement tes joueurs selon leur rang.
+      Plus de disputes — juste du jeu.
     </p>
-
   </section>
 
-  <!-- Outils -->
-  <section class="tools-section">
-    <p class="section-label">Outils disponibles</p>
+  <section class="tools">
+    <p class="tools-label">Choisir un jeu</p>
     <div class="tools-grid">
 
-      <a class="tool-card" href="TeamLol.html">
-        <div class="tool-icon">⚔️</div>
-        <div class="tool-name">Team Maker — LoL</div>
-        <p class="tool-desc">
-          Ajoute jusqu'à 10 joueurs avec leur rang, et l'algorithme trouve la répartition la plus équitable possible. Supporte les rôles aléatoires et les joueurs enregistrés.
-        </p>
-        <span class="tool-cta">
-          Ouvrir <i class="ti ti-arrow-right"></i>
-        </span>
+      <a class="tool-card lol" href="TeamLol.html">
+        <div class="card-icon">⚔️</div>
+        <div class="card-name">League of Legends</div>
+        <p class="card-desc">Rangs Iron à Challenger · Rôles Top/Jungle/Mid/ADC/Supp · Champions aléatoires · Modes Custom et Flex</p>
+        <span class="card-cta">Ouvrir <i class="ti ti-arrow-right"></i></span>
       </a>
 
-      <a class="tool-card" href="TeamValo.html">
-        <div class="tool-icon">🎯</div>
-        <div class="tool-name">Team Maker — Valorant</div>
-        <p class="tool-desc">
-          Même principe pour Valorant — rangs Iron à Radiant, rôles Duelist · Initiator · Controller · Sentinel assignés aléatoirement, joueurs enregistrés persistants.
-        </p>
-        <span class="tool-cta">
-          Ouvrir <i class="ti ti-arrow-right"></i>
-        </span>
+      <a class="tool-card valo" href="TeamValo.html">
+        <div class="card-icon">🎯</div>
+        <div class="card-name">Valorant</div>
+        <p class="card-desc">Rangs Iron à Radiant · Rôles Duelist/Initiator/Controller/Sentinel · Roulette de maps · Modes Custom et Five Stack</p>
+        <span class="card-cta">Ouvrir <i class="ti ti-arrow-right"></i></span>
       </a>
 
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    Team Maker — Fait pour les soirées entre amis ⚔️
-  </footer>
+  <footer>Team Maker — Fait pour les soirées entre amis ⚔️</footer>
 
 </div>
 </body>
