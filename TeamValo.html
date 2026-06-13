@@ -818,7 +818,7 @@ function generate() {
     lastT1=valid; lastT2=[]; lastS1=score; lastS2=0;
     lastRoles1=roles; lastRoles2=null; lastAgents1=agents; lastAgents2=null;
     const name=document.getElementById('sessionName').value.trim();
-    document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Ton Five Stack';
+    document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Ta Five Stack';
     document.getElementById('teamsGrid').className = 'teams-grid mode-single';
     document.getElementById('teamsGrid').innerHTML = buildFiveStackCards('⚔️ Ton équipe', valid, roles, agents, 'gold');
     document.getElementById('diffRow').innerHTML = '';
