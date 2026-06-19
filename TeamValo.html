@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Team Maker — Valorant</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="shared/rank-picker.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -115,18 +116,7 @@
     .storage-dot { width: 5px; height: 5px; border-radius: 50%; background: #50c870; flex-shrink: 0; }
     .storage-dot.error { background: var(--red); }
 
-    .badge { border-radius: 4px; padding: 2px 7px; font-size: 10px; font-weight: 600; white-space: nowrap; }
-    .rank-debutant   { background: rgba(100,100,100,0.2); color: #888; }
-    .rank-iron       { background: rgba(160,140,120,0.2); color: #b0a080; }
-    .rank-bronze     { background: rgba(180,100,60,0.2);  color: #cd7f45; }
-    .rank-silver     { background: rgba(160,180,210,0.2); color: #90acd0; }
-    .rank-gold       { background: rgba(200,170,110,0.2); color: #c8aa6e; }
-    .rank-platine    { background: rgba(60,180,140,0.2);  color: #40b898; }
-    .rank-diamant    { background: rgba(80,130,230,0.2);  color: #7090e0; }
-    .rank-ascendant  { background: rgba(60,200,120,0.2);  color: #38c870; }
-    .rank-immortal   { background: rgba(200,60,100,0.2);  color: #e05070; }
-    .rank-radiant    { background: rgba(255,209,102,0.2); color: #ffd166; border: 1px solid rgba(255,209,102,0.4); }
-    .rank-ascendant, .rank-immortal, .rank-radiant { box-shadow: 0 0 6px rgba(255,100,100,0.2); }
+    /* ── Rank badges → see shared/rank-picker.css (.rank-badge) ── */
 
     .role-badge { border-radius: 4px; padding: 2px 7px; font-size: 10px; font-weight: 600; white-space: nowrap; border: 1px solid; }
     .role-duelist    { background: rgba(255,80,90,0.12); color: #ff5058; border-color: rgba(255,80,90,0.3); }
@@ -428,7 +418,7 @@
 
       <div class="add-saved-form" id="addSavedForm">
         <input type="text" id="savedName" placeholder="Nom du joueur">
-        <select id="savedRank"></select>
+        <div id="savedRankField"></div>
         <div class="add-saved-actions">
           <button class="btn-ghost sm" onclick="closeAddSaved()">Annuler</button>
           <button class="btn-primary sm" onclick="saveNewPlayer()">Enregistrer</button>
@@ -439,6 +429,7 @@
   </aside>
 </div>
 
+<script src="shared/rank-picker.js"></script>
 <script>
 const RANKS = [
   { label: 'Débutant',  value: 0,  cls: 'rank-debutant' },
@@ -452,6 +443,22 @@ const RANKS = [
   { label: 'Immortal',  value: 8,  cls: 'rank-immortal' },
   { label: 'Radiant',   value: 10, cls: 'rank-radiant' },
 ];
+window.PAGE_RANKS = RANKS;
+window.PAGE_RANK_IMG = {
+  'Débutant':  'icon_rank_lol/Unranked.webp',
+  'Iron':      'img_rank_valo/Iron_2_Rank.png',
+  'Bronze':    'img_rank_valo/Bronze_2_Rank.png',
+  'Silver':    'img_rank_valo/Silver_2_Rank.png',
+  'Gold':      'img_rank_valo/Gold_2_Rank.png',
+  'Platine':   'img_rank_valo/Platinum_2_Rank.png',
+  'Diamant':   'img_rank_valo/Diamond_2_Rank.png',
+  'Ascendant': 'img_rank_valo/Ascendant_2_Rank.png',
+  'Immortal':  'img_rank_valo/Immortal_2_Rank.png',
+  'Radiant':   'img_rank_valo/Radiant_Rank.png',
+};
+window.onRankFieldChange = function(fieldId, value) {
+  if (fieldId.indexOf('rank-') === 0) updateRank(parseInt(fieldId.slice(5)), value);
+};
 const ROLES    = ['Duelist', 'Duelist', 'Initiator', 'Controller', 'Sentinel'];
 const ROLE_CLS = { Duelist:'role-duelist', Initiator:'role-initiator', Controller:'role-controller', Sentinel:'role-sentinel' };
 const ROLE_BADGE_CLS = { Duelist:'role-badge role-duelist', Initiator:'role-badge role-initiator', Controller:'role-badge role-controller', Sentinel:'role-badge role-sentinel' };
@@ -673,7 +680,7 @@ function renderGrid() {
     row.className = 'player-row';
     row.innerHTML = `
       <input type="text" placeholder="Joueur ${i+1}" value="${esc(p.name)}" oninput="updateName(${p.id}, this.value)">
-      <select onchange="updateRank(${p.id}, this.value)">${rankOptions(p.rank)}</select>
+      ${renderRankField('rank-'+p.id, p.rank)}
       <button class="btn-icon pin${saved?' pinned':''}" onclick="pinPlayer(${p.id})"
         title="${saved?'Retirer':p.name.trim()?'Enregistrer':"Entrez un nom"}"
         ${!p.name.trim()&&!saved?'disabled':''}>
@@ -708,7 +715,7 @@ function renderSaved() {
       <div class="saved-row" id="row-${sp.id}">
         <div class="saved-info">
           <span class="saved-name">${esc(sp.name)}</span>
-          <span class="badge ${ri.cls}">${ri.label}</span>
+          ${rankBadge(sp.rank)}
         </div>
         <div class="saved-actions">
           <button class="btn-add${alreadyIn?' added':''}" onclick="addFromSaved('${sp.id}')"
@@ -721,7 +728,7 @@ function renderSaved() {
       </div>
       <div class="edit-saved-form" id="edit-${sp.id}">
         <input type="text" id="edit-name-${sp.id}" value="${esc(sp.name)}" placeholder="Nom">
-        <select id="edit-rank-${sp.id}">${rankOptions(sp.rank)}</select>
+        ${renderRankField('edit-rank-'+sp.id, sp.rank)}
         <div class="edit-saved-actions">
           <button class="btn-ghost sm" onclick="closeEditSaved('${sp.id}')">Annuler</button>
           <button class="btn-primary sm" onclick="applyEditSaved('${sp.id}')">OK</button>
@@ -735,7 +742,7 @@ function openAddSaved() { document.getElementById('addSavedForm').style.display=
 function closeAddSaved() { document.getElementById('addSavedForm').style.display='none'; document.getElementById('savedName').value=''; }
 function saveNewPlayer() {
   const name=document.getElementById('savedName').value.trim();
-  const rank=parseInt(document.getElementById('savedRank').value);
+  const rank=getRankFieldValue('savedRankField');
   if(!name) { document.getElementById('savedName').focus(); return; }
   if(savedPlayers.some(s=>s.name.toLowerCase()===name.toLowerCase())) {
     const inp=document.getElementById('savedName'); inp.style.borderColor='var(--red)'; inp.placeholder='Nom déjà utilisé !';
@@ -747,7 +754,7 @@ function openEditSaved(sid) { document.querySelectorAll('.edit-saved-form').forE
 function closeEditSaved(sid) { const f=document.getElementById('edit-'+sid); if(f) f.style.display='none'; }
 function applyEditSaved(sid) {
   const name=document.getElementById('edit-name-'+sid).value.trim();
-  const rank=parseInt(document.getElementById('edit-rank-'+sid).value);
+  const rank=getRankFieldValue('edit-rank-'+sid);
   if(!name) return;
   const sp=savedPlayers.find(s=>s.id===sid); if(!sp) return;
   sp.name=name; sp.rank=rank;
@@ -934,7 +941,7 @@ function buildFiveStackCards(title, players, roles, agents, color) {
         <div class="card-v-player">${esc(p.name)}</div>
         <div class="card-v-footer">
           ${roleInfo}
-          <span class="badge ${ri.cls}">${ri.label}</span>
+          ${rankBadge(p.rank)}
         </div>
       </div>
     </div>`;
@@ -972,7 +979,7 @@ function buildTeamSection(title, players, score, roles, agents, color) {
         <div class="card-info">
           ${agentName}
           <span class="card-player-name">${esc(p.name)}</span>
-          <div class="card-badges"><span class="badge ${ri.cls}">${ri.label}</span></div>
+          <div class="card-badges">${rankBadge(p.rank)}</div>
         </div>
         ${roleBlock}
       </div>
@@ -987,7 +994,7 @@ function buildTeamSection(title, players, score, roles, agents, color) {
   </div>`;
 }
 
-document.getElementById('savedRank').innerHTML = rankOptions(3);
+document.getElementById('savedRankField').outerHTML = renderRankField('savedRankField', 3);
 renderGrid(); loadFromStorage(); updateRolesToggleVisibility();
 requestAnimationFrame(() => buildRouletteStrip());
 </script>
