@@ -868,7 +868,17 @@ function showError(msg) { const el=document.getElementById('errorMsg'); el.textC
 function buildFlexCards(title, players, roles, champs, color) {
   const score = players.reduce((a,p)=>a+parseInt(p.rank),0);
   const avg = rankInfo(Math.round(score/players.length));
-  const cards = players.map((p,i) => {
+
+  // Trier l'affichage horizontal selon l'ordre des rôles (Top → Jungle → Mid → ADC → Supp)
+  // sans modifier le tirage aléatoire — uniquement l'ordre gauche→droite des cartes.
+  let order = players.map((p, i) => i);
+  if (roles) {
+    const roleOrder = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
+    order.sort((a, b) => roleOrder.indexOf(roles[a]) - roleOrder.indexOf(roles[b]));
+  }
+
+  const cards = order.map(i => {
+    const p = players[i];
     const ri = rankInfo(p.rank);
     const champ = champs ? champs[i] : null;
     const role  = roles  ? roles[i]  : null;
@@ -899,7 +909,17 @@ function buildFlexCards(title, players, roles, champs, color) {
 /* ─── Build team section ─── */
 function buildTeamSection(title, players, score, roles, champs, color) {
   const avg = rankInfo(Math.round(score/players.length));
-  const cards = players.map((p,i) => {
+
+  // Trier l'affichage selon l'ordre des rôles (Top → Jungle → Mid → ADC → Supp)
+  // sans modifier le tirage aléatoire lui-même — uniquement l'ordre de présentation.
+  let order = players.map((p, i) => i);
+  if (roles) {
+    const roleOrder = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
+    order.sort((a, b) => roleOrder.indexOf(roles[a]) - roleOrder.indexOf(roles[b]));
+  }
+
+  const cards = order.map(i => {
+    const p = players[i];
     const ri = rankInfo(p.rank);
     const champ = champs ? champs[i] : null;
     const role  = roles  ? roles[i]  : null;
