@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team Maker</title>
+  <title>Who Plays Who</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
@@ -47,7 +47,9 @@
       background:linear-gradient(135deg, var(--gold-d), var(--gold));
       display:flex; align-items:center; justify-content:center;
       font-size:18px; box-shadow:0 2px 12px rgba(200,170,110,0.25);
+      overflow:hidden; padding:6px;
     }
+    .nav-icon img { width:100%; height:100%; object-fit:contain; }
     .nav-title { font-size:16px; font-weight:800; color:var(--text); letter-spacing:-0.01em; }
     .nav-sub   { font-size:10px; color:var(--gold); text-transform:uppercase; letter-spacing:0.12em; }
 
@@ -158,10 +160,10 @@
 
   <nav>
     <a class="nav-brand" href="index.html">
-      <div class="nav-icon">⚔️</div>
+      <div class="nav-icon"><img src="Logo_Site/W.png" alt="Who Plays Who"></div>
       <div>
-        <div class="nav-title">Team Maker</div>
-        <div class="nav-sub">Pour vos soirées</div>
+        <div class="nav-title">Who Plays Who</div>
+        <div class="nav-sub">Équipes équilibrées</div>
       </div>
     </a>
   </nav>
@@ -216,7 +218,7 @@
     </div>
   </section>
 
-  <footer>Team Maker — Fait avec ❤️ pour les soirées entre amis</footer>
+  <footer>Who Plays Who — Fait avec ❤️ pour les soirées entre amis</footer>
 
 </div>
 </body>

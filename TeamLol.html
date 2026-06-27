@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team Maker — League of Legends</title>
+  <title>Who Plays Who — League of Legends</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="stylesheet" href="shared/rank-picker.css">
   <style>
@@ -42,7 +42,7 @@
 
     /* ── Brand ── */
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; padding: 0.25rem 0; }
-    .brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--gold-d), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 12px rgba(200,170,110,0.3); }
+    .brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--gold-d), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 12px rgba(200,170,110,0.3); overflow:hidden; padding:6px; } .brand-icon img{width:100%;height:100%;object-fit:contain;}
     .brand-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
     .brand-sub { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1px; }
 
@@ -130,6 +130,27 @@
     .storage-dot { width: 5px; height: 5px; border-radius: 50%; background: #50c870; flex-shrink: 0; }
     .storage-dot.error { background: var(--red); }
 
+    /* ── Saved search / autocomplete ── */
+    .search-wrap { position: relative; }
+    .search-wrap i.ti-search { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text-2); pointer-events: none; }
+    .search-wrap input[type=text] { padding-left: 30px; }
+    .search-wrap .btn-icon.clear { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; }
+    .suggestions-dropdown {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--bg-3); border: 1px solid var(--border-h);
+      border-radius: var(--r-md); max-height: 230px; overflow-y: auto;
+      z-index: 30; box-shadow: 0 10px 30px rgba(0,0,0,0.55); display: none;
+    }
+    .suggestion-item {
+      padding: 8px 11px; font-size: 13px; color: var(--text); cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover, .suggestion-item.active { background: var(--bg-4); }
+    .suggestion-item .sugg-name strong { color: var(--gold); }
+    .suggestion-item.disabled { opacity: 0.4; cursor: not-allowed; }
+
     /* ── Rank badges → see shared/rank-picker.css (.rank-badge) ── */
 
     /* ── Role badges ── */
@@ -212,6 +233,15 @@
       border: 1px solid rgba(255,255,255,0.12);
       flex-shrink: 0; background: var(--bg-4);
     }
+    .card-champ-wrap { position: relative; flex-shrink: 0; }
+    .btn-reroll-single {
+      position: absolute; bottom: -4px; right: -4px;
+      width: 19px; height: 19px; border-radius: 50%;
+      background: var(--bg-4); border: 1px solid var(--border-h);
+      color: var(--gold); display: flex; align-items: center; justify-content: center;
+      font-size: 10px; cursor: pointer; transition: all 0.15s; padding: 0;
+    }
+    .btn-reroll-single:hover { background: var(--gold); color: #0D0D10; transform: rotate(90deg); }
     .card-champ-placeholder {
       width: 52px; height: 52px; border-radius: 10px;
       background: var(--bg-4); border: 1px dashed var(--border-h);
@@ -290,6 +320,11 @@
       display: flex; align-items: center; justify-content: center;
       color: var(--text-2); font-size: 40px; opacity: 0.3;
     }
+    .card-v-img-wrap .btn-reroll-single {
+      position: absolute; bottom: 6px; right: 6px;
+      width: 24px; height: 24px; font-size: 12px;
+      background: rgba(13,13,16,0.75); backdrop-filter: blur(4px);
+    }
 
     /* Infos en bas de la carte verticale */
     .card-v-body {
@@ -338,21 +373,16 @@
     <div class="panel-inner">
 
       <a href="index.html" class="brand">
-        <div class="brand-icon">⚔️</div>
+        <div class="brand-icon"><img src="Logo_Site/W.png" alt="Who Plays Who"></div>
         <div>
-          <div class="brand-name">Team Maker</div>
+          <div class="brand-name">Who Plays Who</div>
           <div class="brand-sub">League of Legends</div>
         </div>
       </a>
 
       <div class="div"></div>
 
-      <div>
-        <p class="lbl">Nom de la partie</p>
-        <input type="text" id="sessionName" placeholder="Soirée LoL du vendredi">
-      </div>
-
-      <div class="mode-sw">
+<div class="mode-sw">
         <button class="mode-btn active" id="btnCustom" onclick="setMode('custom')">
           <i class="ti ti-layout-grid"></i> Custom
         </button>
@@ -436,6 +466,17 @@
       <div class="storage-status">
         <span class="storage-dot" id="storageDot"></span>
         <span id="storageLabel">Chargement…</span>
+      </div>
+
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="savedSearch" placeholder="Rechercher un joueur…"
+          oninput="onSavedSearchInput(this.value)"
+          onkeydown="onSavedSearchKeydown(event)"
+          onblur="setTimeout(()=>{document.getElementById('savedSuggestions').style.display='none'},150)"
+          autocomplete="off">
+        <button class="btn-icon clear" id="savedSearchClear" style="display:none" onclick="clearSavedSearch()" title="Effacer"><i class="ti ti-x"></i></button>
+        <div class="suggestions-dropdown" id="savedSuggestions"></div>
       </div>
 
       <div id="savedList" class="saved-list"></div>
@@ -685,20 +726,104 @@ function pinPlayer(id) {
   persistSaved(); renderSaved(); renderGrid();
 }
 
+/* ─── Saved : recherche / autocomplétion ─── */
+let savedSearchQuery = '';
+
+function matchSavedPlayers(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return savedPlayers;
+  return savedPlayers.filter(s => s.name.toLowerCase().includes(q));
+}
+
+function highlightMatch(name, query) {
+  const q = query.trim();
+  if (!q) return esc(name);
+  const idx = name.toLowerCase().indexOf(q.toLowerCase());
+  if (idx === -1) return esc(name);
+  return esc(name.slice(0, idx)) + '<strong>' + esc(name.slice(idx, idx + q.length)) + '</strong>' + esc(name.slice(idx + q.length));
+}
+
+function onSavedSearchInput(val) {
+  savedSearchQuery = val;
+  document.getElementById('savedSearchClear').style.display = val ? 'flex' : 'none';
+  updateSavedSuggestions(val);
+  renderSaved();
+}
+
+function updateSavedSuggestions(query) {
+  const dd = document.getElementById('savedSuggestions');
+  const q = query.trim();
+  if (!q) { dd.style.display = 'none'; dd.innerHTML = ''; return; }
+  const matches = matchSavedPlayers(q).slice(0, 8);
+  if (!matches.length) {
+    dd.innerHTML = `<div class="suggestion-item disabled">Aucun joueur trouvé</div>`;
+    dd.style.display = 'block';
+    return;
+  }
+  dd.innerHTML = matches.map(sp => {
+    const alreadyIn = players.some(p => p.name === sp.name);
+    const full = players.length >= getMaxPlayers();
+    const disabled = alreadyIn || full;
+    return `<div class="suggestion-item${disabled?' disabled':''}" onmousedown="event.preventDefault();selectSuggestion('${sp.id}')">
+      <span class="sugg-name">${highlightMatch(sp.name, q)}</span>
+      ${rankBadge(sp.rank)}
+    </div>`;
+  }).join('');
+  dd.style.display = 'block';
+}
+
+function selectSuggestion(sid) {
+  const sp = savedPlayers.find(s => s.id === sid); if (!sp) return;
+  if (players.some(p => p.name === sp.name) || players.length >= getMaxPlayers()) return;
+  addFromSaved(sid);
+  document.getElementById('savedSearch').value = '';
+  savedSearchQuery = '';
+  document.getElementById('savedSearchClear').style.display = 'none';
+  document.getElementById('savedSuggestions').style.display = 'none';
+  renderSaved();
+}
+
+function onSavedSearchKeydown(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) return;
+    const exact = savedPlayers.find(s => s.name.toLowerCase() === q);
+    if (exact) { selectSuggestion(exact.id); return; }
+    const matches = matchSavedPlayers(q);
+    if (matches.length === 1) selectSuggestion(matches[0].id);
+  } else if (e.key === 'Escape') {
+    document.getElementById('savedSuggestions').style.display = 'none';
+  }
+}
+
+function clearSavedSearch() {
+  document.getElementById('savedSearch').value = '';
+  savedSearchQuery = '';
+  document.getElementById('savedSearchClear').style.display = 'none';
+  document.getElementById('savedSuggestions').style.display = 'none';
+  renderSaved();
+}
+
 /* ─── Saved ─── */
 function renderSaved() {
   const list = document.getElementById('savedList');
+  const visible = matchSavedPlayers(savedSearchQuery);
   if (!savedPlayers.length) {
     list.innerHTML = `<p class="saved-empty">Aucun joueur enregistré.<br><span style="font-size:11px">Utilise 🔖 pour épingler.</span></p>`;
     return;
   }
-  list.innerHTML = savedPlayers.map(sp => {
+  if (!visible.length) {
+    list.innerHTML = `<p class="saved-empty">Aucun résultat pour « ${esc(savedSearchQuery.trim())} ».</p>`;
+    return;
+  }
+  list.innerHTML = visible.map(sp => {
     const ri = rankInfo(sp.rank);
     const alreadyIn = players.some(p => p.name === sp.name);
     return `
       <div class="saved-row" id="row-${sp.id}">
         <div class="saved-info">
-          <span class="saved-name">${esc(sp.name)}</span>
+          <span class="saved-name">${highlightMatch(sp.name, savedSearchQuery)}</span>
           ${rankBadge(sp.rank)}
         </div>
         <div class="saved-actions">
@@ -782,8 +907,7 @@ function generate() {
     const score = valid.reduce((a,p)=>a+parseInt(p.rank),0);
     lastT1=valid; lastT2=[]; lastS1=score; lastS2=0;
     lastRoles1=roles; lastRoles2=null; lastChamps1=champs; lastChamps2=null;
-    const name=document.getElementById('sessionName').value.trim();
-    document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Ton équipe Flex';
+    document.getElementById('sessionTitle').textContent = 'Ton équipe Flex';
     document.getElementById('teamsGrid').className = 'teams-grid mode-single';
     document.getElementById('teamsGrid').innerHTML = buildFlexCards('⚔️ Ton équipe', valid, roles, champs, 'gold');
     document.getElementById('diffRow').innerHTML = '';
@@ -803,15 +927,14 @@ function generate() {
         const pick=pickChampions(t1.length+t2.length); champs1=pick.slice(0,t1.length); champs2=pick.slice(t1.length);
       }
     }
-    const name=document.getElementById('sessionName').value.trim();
-    document.getElementById('sessionTitle').textContent = name ? `🎮 ${name}` : 'Résultat';
+    document.getElementById('sessionTitle').textContent = 'Résultat';
     const s1=t1.reduce((a,p)=>a+p.rank,0), s2=t2.reduce((a,p)=>a+p.rank,0);
     lastT1=t1; lastT2=t2; lastS1=s1; lastS2=s2;
     lastRoles1=roles1; lastRoles2=roles2; lastChamps1=champs1; lastChamps2=champs2;
     document.getElementById('teamsGrid').className = 'teams-grid';
     document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1',t1,s1,roles1,champs1,'blue') +
-      buildTeamSection('🔴 Équipe 2',t2,s2,roles2,champs2,'red');
+      buildTeamSection('🔵 Équipe 1',t1,s1,roles1,champs1,'blue','team1') +
+      buildTeamSection('🔴 Équipe 2',t2,s2,roles2,champs2,'red','team2');
     const ctxt=combos>1?` · ${combos} combinaisons équitables`:'';
     document.getElementById('diffRow').innerHTML = `Diff : <strong>${diff} pt${diff!==1?'s':''}</strong>${ctxt}`;
     document.getElementById('rerollRolesBtn').style.display = useRoles?'inline-flex':'none';
@@ -834,8 +957,8 @@ function rerollRoles() {
     lastRoles1=shuffle(ROLES); lastRoles2=shuffle(ROLES);
     document.getElementById('teamsGrid').className = 'teams-grid';
     document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue')+
-      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red');
+      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue','team1')+
+      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red','team2');
   }
 }
 function rerollChampions() {
@@ -856,12 +979,40 @@ function rerollChampions() {
     }
     document.getElementById('teamsGrid').className = 'teams-grid';
     document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue')+
-      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red');
+      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue','team1')+
+      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red','team2');
   }
 }
 
 function showError(msg) { const el=document.getElementById('errorMsg'); el.textContent=msg; el.style.display='block'; }
+
+/* ─── Relancer le champion d'un seul joueur ───
+   Garde tout le reste identique : équipes, rôles, autres champions.
+   Si le joueur n'a pas ce champion ("Je n'ai pas ce champion"), un clic
+   suffit pour lui tirer un autre champion valide (respecte son rôle si
+   les rôles sont actifs, et évite les doublons avec les champions
+   actuellement attribués dans la partie). */
+function rerollSinglePlayer(side, idx) {
+  const used = new Set([...(lastChamps1||[]), ...(lastChamps2||[])].filter(Boolean));
+  let role = null, current = null;
+  if (side === 'flex') { role = lastRoles1 ? lastRoles1[idx] : null; current = lastChamps1[idx]; used.delete(current); }
+  else if (side === 'team1') { role = lastRoles1 ? lastRoles1[idx] : null; current = lastChamps1[idx]; used.delete(current); }
+  else { role = lastRoles2 ? lastRoles2[idx] : null; current = lastChamps2[idx]; used.delete(current); }
+
+  const newChamp = role ? pickChampForRole(role, used) : pickChampions(CHAMPIONS.length).find(c => !used.has(c)) || current;
+
+  if (side === 'flex') lastChamps1[idx] = newChamp;
+  else if (side === 'team1') lastChamps1[idx] = newChamp;
+  else lastChamps2[idx] = newChamp;
+
+  if (currentMode === 'flex') {
+    document.getElementById('teamsGrid').innerHTML = buildFlexCards('⚔️ Ton équipe', lastT1, lastRoles1, lastChamps1, 'gold');
+  } else {
+    document.getElementById('teamsGrid').innerHTML =
+      buildTeamSection('🔵 Équipe 1', lastT1, lastS1, lastRoles1, lastChamps1, 'blue', 'team1') +
+      buildTeamSection('🔴 Équipe 2', lastT2, lastS2, lastRoles2, lastChamps2, 'red', 'team2');
+  }
+}
 
 
 /* ─── Build flex cards (layout vertical) ─── */
@@ -889,8 +1040,13 @@ function buildFlexCards(title, players, roles, champs, color) {
     const roleHtml = role
       ? `<div class="card-v-role"><img src="${ROLE_IMG[role]}" alt="${role}"><span class="card-v-role-name">${role}</span></div>`
       : '';
+    const rerollBtn = champ
+      ? `<button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('flex',${i})" title="Je n'ai pas ce champion — relancer">
+           <i class="ti ti-refresh"></i>
+         </button>`
+      : '';
     return `<div class="player-card-v team-${color}">
-      <div class="card-v-img-wrap">${imgHtml}</div>
+      <div class="card-v-img-wrap">${imgHtml}${rerollBtn}</div>
       <div class="card-v-body">
         ${champName}
         <div class="card-v-player">${esc(p.name)}</div>
@@ -907,7 +1063,7 @@ function buildFlexCards(title, players, roles, champs, color) {
 }
 
 /* ─── Build team section ─── */
-function buildTeamSection(title, players, score, roles, champs, color) {
+function buildTeamSection(title, players, score, roles, champs, color, side) {
   const avg = rankInfo(Math.round(score/players.length));
 
   // Trier l'affichage selon l'ordre des rôles (Top → Jungle → Mid → ADC → Supp)
@@ -924,8 +1080,13 @@ function buildTeamSection(title, players, score, roles, champs, color) {
     const champ = champs ? champs[i] : null;
     const role  = roles  ? roles[i]  : null;
     const bg = champ ? `style="background-image:url('icon_champion/${champ}_0.jpg')"` : '';
+    const rerollBtn = champ
+      ? `<button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('${side}',${i})" title="Je n'ai pas ce champion — relancer">
+           <i class="ti ti-refresh"></i>
+         </button>`
+      : '';
     const champImg = champ
-      ? `<img class="card-champ-img" src="icon_champion/${champ}_0.jpg" alt="${champ}" onerror="this.style.display='none'">`
+      ? `<div class="card-champ-wrap"><img class="card-champ-img" src="icon_champion/${champ}_0.jpg" alt="${champ}" onerror="this.style.display='none'">${rerollBtn}</div>`
       : '';
     const champName = champ ? `<span class="card-champ-name">${champ}</span>` : '';
     const roleBlock = role
