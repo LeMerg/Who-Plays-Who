@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Who Plays Who — Valorant</title>
+  <link rel="icon" type="image/png" href="Logo_Site/W.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="stylesheet" href="shared/rank-picker.css">
   <style>
@@ -309,6 +312,74 @@
       .teams-grid { grid-template-columns: 1fr; }
       .player-row { grid-template-columns: 1fr auto 28px 28px; }
       .roulette-item { width: 200px; }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       REFONTE VISUELLE — identité broadcast / esport premium
+       (signature : panneaux à coin coupé façon overlay de diffusion,
+       typographie display + mono façon scoreboard)
+    ════════════════════════════════════════════════════════ */
+    :root {
+      --font-display: 'Bricolage Grotesque', var(--font);
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body::before {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:0.4;
+      background-image:repeating-linear-gradient(180deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    }
+
+    /* Typographie */
+    .brand-name, h2#sessionTitle, .team-title, .card-v-player { font-family: var(--font-display); letter-spacing: -0.01em; }
+    .lbl, .nav-sub, .brand-sub, .card-v-agent-name, .card-v-role-name-big, .card-role-name, .team-score-lbl, #playerCount, .stat-lbl {
+      font-family: var(--font-mono);
+    }
+    h2#sessionTitle { font-weight: 700; font-size: 19px; }
+    .card-champ-name { font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+    /* Trame / accent supérieur des panneaux */
+    .panel, .panel-right { position: relative; }
+    .panel::before, .panel-right::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent); opacity: 0.5;
+    }
+
+    /* Logo + brand : coin coupé */
+    .brand-icon, .nav-icon {
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    /* Signature : coin coupé (haut-droit) sur les panneaux fonctionnels */
+    .player-card, .saved-row, .toggle-row, .add-saved-form, .edit-saved-form, .mode-sw {
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    }
+    .card-v-img-wrap, .card-champ-placeholder {
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+    }
+    .player-card-v {
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+    }
+
+    /* Boutons : coin coupé + effet de balayage lumineux au survol */
+    .btn-primary {
+      position: relative; overflow: hidden; text-transform: uppercase; letter-spacing: 0.05em;
+      font-family: var(--font-display); font-weight: 700;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .btn-primary::after {
+      content:''; position: absolute; top: 0; left: -60%; width: 35%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg); transition: left 0.5s ease;
+    }
+    .btn-primary:hover::after { left: 130%; }
+    .btn-ghost, .btn-icon { clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%); }
+
+    /* Accessibilité — focus visible */
+    a:focus-visible, button:focus-visible, input:focus-visible, .player-card:focus-visible {
+      outline: 2px solid var(--red); outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     }
   </style>
 </head>

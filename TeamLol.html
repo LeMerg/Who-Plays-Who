@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Who Plays Who — League of Legends</title>
+  <link rel="icon" type="image/png" href="Logo_Site/W.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="stylesheet" href="shared/rank-picker.css">
   <style>
@@ -211,13 +214,13 @@
     .player-card:hover .card-bg { opacity: 0.25; }
 
     /* Bord coloré gauche selon équipe */
-    .player-card::before {
+    .player-card::before, .bravery-card::before {
       content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
       border-radius: 3px 0 0 3px;
     }
-    .player-card.team-blue::before { background: linear-gradient(to bottom, #4d8ef5, #2a5cc0); box-shadow: 2px 0 8px rgba(77,142,245,0.4); }
-    .player-card.team-red::before  { background: linear-gradient(to bottom, #e05252, #a02828); box-shadow: 2px 0 8px rgba(224,82,82,0.4); }
-    .player-card.team-gold::before { background: linear-gradient(to bottom, var(--gold), var(--gold-d)); box-shadow: 2px 0 8px rgba(200,170,110,0.4); }
+    .player-card.team-blue::before, .bravery-card.team-blue::before { background: linear-gradient(to bottom, #4d8ef5, #2a5cc0); box-shadow: 2px 0 8px rgba(77,142,245,0.4); }
+    .player-card.team-red::before, .bravery-card.team-red::before  { background: linear-gradient(to bottom, #e05252, #a02828); box-shadow: 2px 0 8px rgba(224,82,82,0.4); }
+    .player-card.team-gold::before, .bravery-card.team-gold::before { background: linear-gradient(to bottom, var(--gold), var(--gold-d)); box-shadow: 2px 0 8px rgba(200,170,110,0.4); }
 
     /* Contenu de la carte */
     .card-body {
@@ -363,6 +366,117 @@
       .teams-grid { grid-template-columns: 1fr; }
       .player-row { grid-template-columns: 1fr auto 28px 28px; }
     }
+
+    /* ════════════════════════════════════════════════════════
+       REFONTE VISUELLE — identité broadcast / esport premium
+       (signature : panneaux à coin coupé façon overlay de diffusion,
+       typographie display + mono façon scoreboard)
+    ════════════════════════════════════════════════════════ */
+    :root {
+      --font-display: 'Bricolage Grotesque', var(--font);
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body::before {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:0.4;
+      background-image:repeating-linear-gradient(180deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    }
+
+    /* Typographie */
+    .brand-name, h2#sessionTitle, .team-title, .card-v-player, .placeholder p strong { font-family: var(--font-display); letter-spacing: -0.01em; }
+    .lbl, .nav-sub, .brand-sub, .card-v-champ, .card-v-role-name, .card-role-name, .team-score-lbl, #playerCount, .stat-lbl {
+      font-family: var(--font-mono);
+    }
+    h2#sessionTitle { font-weight: 700; font-size: 19px; }
+    .card-champ-name { font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+    /* Trame / accent supérieur des panneaux */
+    .panel, .panel-right { position: relative; }
+    .panel::before, .panel-right::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5;
+    }
+
+    /* Logo + brand : coin coupé */
+    .brand-icon, .nav-icon {
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    /* Signature : coin coupé (haut-droit) sur les panneaux fonctionnels */
+    .player-card, .saved-row, .toggle-row, .add-saved-form, .edit-saved-form, .mode-sw {
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    }
+    .card-v-img-wrap, .card-champ-img, .card-champ-placeholder {
+      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+    }
+    .player-card-v {
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+    }
+
+    /* Boutons : coin coupé + effet de balayage lumineux au survol */
+    .btn-primary {
+      position: relative; overflow: hidden; text-transform: uppercase; letter-spacing: 0.05em;
+      font-family: var(--font-display); font-weight: 700;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .btn-primary::after {
+      content:''; position: absolute; top: 0; left: -60%; width: 35%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg); transition: left 0.5s ease;
+    }
+    .btn-primary:hover::after { left: 130%; }
+    .btn-ghost, .btn-icon { clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%); }
+
+    /* Accessibilité — focus visible */
+    a:focus-visible, button:focus-visible, input:focus-visible, .player-card:focus-visible {
+      outline: 2px solid var(--gold); outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    /* ── Mode Téméraire : runes + build imposés (icônes uniquement) ── */
+    .teams-grid.bravery-active { grid-template-columns: 1fr; gap: 10px; }
+    .bravery-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    }
+    @media (max-width: 1100px) { .bravery-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px)  { .bravery-grid { grid-template-columns: repeat(2, 1fr); } }
+    .bravery-card {
+      position: relative; background: var(--bg-3); border: 1px solid var(--border); padding: 8px 9px 8px 11px;
+      display: flex; flex-direction: column; gap: 6px; min-width: 0;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    }
+    .bravery-hd { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .bravery-role { flex-shrink: 0; display: flex; align-items: center; }
+    .bravery-role img { width: 16px; height: 16px; object-fit: contain; }
+    .bravery-player { font-weight: 700; font-size: 12px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bravery-champ-block { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .bravery-champ { font-family: var(--font-mono); font-size: 9.5px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+    .bravery-champ-wrap { position: relative; flex-shrink: 0; }
+    .bravery-champ-wrap .card-champ-img { width: 26px; height: 26px; border-radius: 5px; }
+    .bravery-champ-wrap .btn-reroll-single { width: 13px; height: 13px; font-size: 7px; bottom: -3px; right: -3px; }
+    .bravery-runes { display: flex; flex-direction: column; gap: 4px; }
+    .bravery-rune-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .bravery-tree-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
+    .bravery-keystone-icon { width: 20px; height: 20px; object-fit: contain; border-radius: 50%; background: var(--bg-4); flex-shrink: 0; }
+    .bravery-minor-icon { width: 15px; height: 15px; object-fit: contain; border-radius: 50%; background: var(--bg-4); flex-shrink: 0; padding: 1px; }
+    .bravery-shard-sep { width: 1px; height: 14px; background: var(--border); margin: 0 1px; flex-shrink: 0; }
+    .bravery-shard-icon { width: 15px; height: 15px; object-fit: contain; flex-shrink: 0; border-radius: 50%; background: var(--bg-4); padding: 1px; }
+    .bravery-fallback {
+      display: inline-flex; align-items: center; font-size: 9px; color: var(--text-2);
+      background: var(--bg-4); border-radius: 3px; padding: 1px 5px; width: auto !important; height: auto !important;
+    }
+    .bravery-build {
+      display: flex; align-items: center; gap: 2px; flex-wrap: wrap;
+      padding-top: 5px; border-top: 1px solid var(--border);
+    }
+    .bravery-step { display: inline-flex; align-items: center; }
+    .bravery-item-icon {
+      width: 24px; height: 24px; object-fit: cover; border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.12); background: var(--bg-4); flex-shrink: 0;
+    }
+    .bravery-arrow { font-size: 9px; color: var(--text-2); opacity: 0.4; }
   </style>
 </head>
 <body>
@@ -410,10 +524,18 @@
       </div>
 
       <div class="toggle-row">
-        <input type="checkbox" id="champToggle">
+        <input type="checkbox" id="champToggle" onchange="updateBraveryToggleAvailability()">
         <label for="champToggle">
           <span class="tgl-title">Champions aléatoires</span>
           <span class="tgl-sub">Un champion unique par joueur</span>
+        </label>
+      </div>
+
+      <div class="toggle-row" id="braveryToggleRow">
+        <input type="checkbox" id="braveryToggle" onchange="updateRolesLockForBravery()">
+        <label for="braveryToggle">
+          <span class="tgl-title"><i class="ti ti-dice-5"></i> Mode Téméraire</span>
+          <span class="tgl-sub" id="braveryToggleSub">Runes + build imposés au hasard</span>
         </label>
       </div>
 
@@ -442,6 +564,12 @@
             </button>
             <button class="btn-ghost sm" id="rerollChampsBtn" onclick="rerollChampions()" style="display:none">
               <i class="ti ti-cards"></i> Champions
+            </button>
+            <button class="btn-ghost sm" id="rerollBraveryOnlyBtn" onclick="rerollBraveryOnly()" style="display:none">
+              <i class="ti ti-dice-5"></i> Runes &amp; objets
+            </button>
+            <button class="btn-ghost sm" id="rerollBraveryAllBtn" onclick="rerollBraveryAll()" style="display:none">
+              <i class="ti ti-refresh-dot"></i> Tout relancer
             </button>
             <button class="btn-ghost sm" onclick="generate()">
               <i class="ti ti-refresh"></i> Regénérer
@@ -574,6 +702,40 @@ function updateRolesToggleVisibility() {
   }
 }
 
+/* Le Mode Téméraire a besoin d'un champion par joueur pour construire
+   les runes + l'objet imposé : on le désactive si "Champions aléatoires"
+   n'est pas cochée. */
+function updateBraveryToggleAvailability() {
+  const champOn = document.getElementById('champToggle').checked;
+  const row = document.getElementById('braveryToggleRow');
+  const toggle = document.getElementById('braveryToggle');
+  if (!champOn) {
+    toggle.checked = false;
+    row.style.opacity = '0.4'; row.style.pointerEvents = 'none';
+    updateRolesLockForBravery();
+  } else {
+    row.style.opacity = '1'; row.style.pointerEvents = 'auto';
+  }
+}
+
+/* Le Mode Téméraire a besoin des rôles pour savoir qui est ADC (7 objets)
+   et pour afficher le bon rôle sur chaque carte : les rôles sont donc
+   forcés et verrouillés (cochés, non décochables) tant que le Mode
+   Téméraire est actif. */
+function updateRolesLockForBravery() {
+  const braveryOn = document.getElementById('braveryToggle').checked;
+  const rolesToggle = document.getElementById('rolesToggle');
+  const row = document.getElementById('rolesToggleRow');
+  const sub = document.getElementById('rolesToggleSub');
+  if (braveryOn) {
+    rolesToggle.checked = true;
+    row.style.opacity = '0.7'; row.style.pointerEvents = 'none';
+    sub.textContent = 'Requis par le Mode Téméraire';
+  } else {
+    updateRolesToggleVisibility();
+  }
+}
+
 /* ─── Storage ─── */
 function loadFromStorage() {
   try {
@@ -667,6 +829,400 @@ function pickChampsForRoles(roles) {
 }
 
 function pickChampions(count) { return shuffle([...CHAMPIONS]).slice(0,count); }
+
+/* ════════════════════════════════════════════════════════
+   ULTIMATE BRAVERY — runes + build d'objets 100% aléatoires
+   à faire sur le champion tiré pour chaque joueur.
+   Les icônes viennent du CDN officiel Data Dragon (Riot Games).
+   Tout est regroupé ici pour rester facile à modifier.
+════════════════════════════════════════════════════════ */
+
+/* Icônes 100% locales — aucun appel à une API ou un CDN externe.
+   Seules les runes présentes dans le pack d'images fourni sont utilisées. */
+const LOCAL_RUNE_ICONS = {
+  'Conqueror': 'icon_runes/Precision/Conqueror.webp',
+  'Lethal Tempo': 'icon_runes/Precision/LethalTempo.webp',
+  'Press the Attack': 'icon_runes/Precision/PressTheAttack.webp',
+  'Fleet Footwork': 'icon_runes/Precision/FleetFootwork.webp',
+  'Absorb Life': 'icon_runes/Precision/AbsorbLife.webp',
+  'Presence of Mind': 'icon_runes/Precision/PresenceOfMind.webp',
+  'Triumph': 'icon_runes/Precision/Triumph.webp',
+  'Legend: Alacrity': 'icon_runes/Precision/LegendAlacrity.webp',
+  'Legend: Bloodline': 'icon_runes/Precision/LegendBloodline.webp',
+  'Legend: Haste': 'icon_runes/Precision/LegendHaste.webp',
+  'Coup de Grace': 'icon_runes/Precision/CoupDeGrace.webp',
+  'Cut Down': 'icon_runes/Precision/CutDown.webp',
+  'Last Stand': 'icon_runes/Precision/LastStand.webp',
+
+  'Dark Harvest': 'icon_runes/Domination/DarkHarvest.webp',
+  'Electrocute': 'icon_runes/Domination/Electrocute.webp',
+  'Hail of Blades': 'icon_runes/Domination/HailOfBlades.webp',
+  'Cheap Shot': 'icon_runes/Domination/CheapShot.webp',
+  'Sudden Impact': 'icon_runes/Domination/SuddenImpact.webp',
+  'Taste of Blood': 'icon_runes/Domination/TasteOfBlood.webp',
+  'Deep Ward': 'icon_runes/Domination/DeepWard.webp',
+  'Grisly Mementos': 'icon_runes/Domination/GrislyMementos.webp',
+  'Sixth Sense': 'icon_runes/Domination/SixthSense.webp',
+  'Relentless Hunter': 'icon_runes/Domination/RelentlessHunter.webp',
+  'Treasure Hunter': 'icon_runes/Domination/TreasureHunter.webp',
+  'Ultimate Hunter': 'icon_runes/Domination/UltimateHunter.webp',
+
+  'Arcane Comet': 'icon_runes/Sorcery/ArcaneComet.webp',
+  'Summon Aery': 'icon_runes/Sorcery/SummonAery.webp',
+  'Deathfire Touch': 'icon_runes/Sorcery/DeathfireTouch.webp',
+  "Stormraider's Surge": 'icon_runes/Sorcery/StormraidersSurge.webp',
+  'Manaflow Band': 'icon_runes/Sorcery/ManaflowBand.webp',
+  'Nimbus Cloak': 'icon_runes/Sorcery/NimbusCloak.webp',
+  'Axiom Arcanist': 'icon_runes/Sorcery/AxiomArcanist.webp',
+  'Absolute Focus': 'icon_runes/Sorcery/AbsoluteFocus.webp',
+  'Celerity': 'icon_runes/Sorcery/Celerity.webp',
+  'Transcendence': 'icon_runes/Sorcery/Transcendence.webp',
+  'Gathering Storm': 'icon_runes/Sorcery/GatheringStorm.webp',
+  'Scorch': 'icon_runes/Sorcery/Scorch.webp',
+  'Waterwalking': 'icon_runes/Sorcery/Waterwalking.webp',
+
+  'Aftershock': 'icon_runes/Resolve/Aftershock.webp',
+  'Grasp of the Undying': 'icon_runes/Resolve/GraspOfTheUndying.webp',
+  'Guardian': 'icon_runes/Resolve/Guardian.webp',
+  'Demolish': 'icon_runes/Resolve/Demolish.webp',
+  'Font of Life': 'icon_runes/Resolve/FontOfLife.webp',
+  'Shield Bash': 'icon_runes/Resolve/ShieldBash.webp',
+  'Bone Plating': 'icon_runes/Resolve/BonePlating.webp',
+  'Conditioning': 'icon_runes/Resolve/Conditioning.webp',
+  'Second Wind': 'icon_runes/Resolve/SecondWind.webp',
+  'Overgrowth': 'icon_runes/Resolve/Overgrowth.webp',
+  'Revitalize': 'icon_runes/Resolve/Revitalize.webp',
+  'Unflinching': 'icon_runes/Resolve/Unflinching.webp',
+
+  'First Strike': 'icon_runes/Inspiration/FirstStrike.webp',
+  'Glacial Augment': 'icon_runes/Inspiration/GlacialAugment.webp',
+  'Unsealed Spellbook': 'icon_runes/Inspiration/UnsealedSpellbook.webp',
+  'Magical Footwear': 'icon_runes/Inspiration/MagicalFootwear.webp',
+  'Cash Back': 'icon_runes/Inspiration/CashBack.webp',
+  'Hextech Flashtraption': 'icon_runes/Inspiration/HextechFlashtraption.webp',
+  'Biscuit Delivery': 'icon_runes/Inspiration/BiscuitDelivery.webp',
+  'Time Warp Tonic': 'icon_runes/Inspiration/TimeWarpTonic.webp',
+  'Triple Tonic': 'icon_runes/Inspiration/TripleTonic.webp',
+  'Approach Velocity': 'icon_runes/Inspiration/ApproachVelocity.webp',
+  'Cosmic Insight': 'icon_runes/Inspiration/CosmicInsight.webp',
+  'Jack of All Trades': 'icon_runes/Inspiration/JackOfAllTrades.png',
+};
+function runeIcon(name) {
+  return LOCAL_RUNE_ICONS[name] || null;
+}
+
+/* Fragments de statistiques : icônes locales fournies (en, fr pour l'affichage) */
+const SHARD_ICONS = {
+  'Attack Speed':            { fr:"Vitesse d'attaque",        img:'icon_runes/Shards/AttackSpeed.webp' },
+  'Adaptive Force':          { fr:'Force adaptative',          img:'icon_runes/Shards/AdaptiveForce.webp' },
+  'Ability Haste':           { fr:'Hâte de compétence',        img:'icon_runes/Shards/AbilityHaste.webp' },
+  'Movement Speed':          { fr:'Vitesse de déplacement',    img:'icon_runes/Shards/MovementSpeed.webp' },
+  'Health Scaling':          { fr:'PV (croissance)',           img:'icon_runes/Shards/HealthScaling.webp' },
+  'Health':                  { fr:'PV',                        img:'icon_runes/Shards/Health.webp' },
+  'Tenacity and Slow Resist':{ fr:'Tenacité + résist. ralent.', img:'icon_runes/Shards/TenacityAndSlowResist.webp' },
+};
+
+const RUNE_TREES = {
+  Précision:    { color:'#C8AA6E',
+                  keystones:['Press the Attack','Conqueror','Lethal Tempo','Fleet Footwork'],
+                  minors:['Triumph','Presence of Mind','Absorb Life','Legend: Alacrity','Legend: Bloodline','Legend: Haste','Coup de Grace','Cut Down','Last Stand'] },
+  Domination:   { color:'#E0727B',
+                  keystones:['Electrocute','Dark Harvest','Hail of Blades'],
+                  minors:['Sudden Impact','Taste of Blood','Cheap Shot','Deep Ward','Grisly Mementos','Sixth Sense','Treasure Hunter','Ultimate Hunter','Relentless Hunter'] },
+  Sorcellerie:  { color:'#9FC5FF',
+                  keystones:['Summon Aery','Arcane Comet','Deathfire Touch',"Stormraider's Surge"],
+                  minors:['Manaflow Band','Nimbus Cloak','Axiom Arcanist','Transcendence','Celerity','Absolute Focus','Waterwalking','Scorch','Gathering Storm'] },
+  Détermination:{ color:'#A2E2C9',
+                  keystones:['Grasp of the Undying','Aftershock','Guardian'],
+                  minors:['Demolish','Font of Life','Shield Bash','Conditioning','Second Wind','Bone Plating','Overgrowth','Revitalize','Unflinching'] },
+  Inspiration:  { color:'#9DC8C8',
+                  keystones:['Unsealed Spellbook','First Strike','Glacial Augment'],
+                  minors:['Magical Footwear','Biscuit Delivery','Cosmic Insight','Approach Velocity','Time Warp Tonic','Cash Back','Hextech Flashtraption','Triple Tonic','Jack of All Trades'] },
+};
+const STAT_SHARDS = [
+  ['Attack Speed','Adaptive Force','Ability Haste'],
+  ['Adaptive Force','Movement Speed','Health Scaling'],
+  ['Health','Health Scaling','Tenacity and Slow Resist'],
+];
+const BOOTS = [
+  { name:"Berserker's Greaves",      img:"icon_items/Boots/Berserker's_Greaves.webp" },
+  { name:"Boots of Swiftness",       img:"icon_items/Boots/Boots_of_Swiftness.png" },
+  { name:"Gluttonous Greaves",       img:"icon_items/Boots/Gluttonous_Greaves.webp" },
+  { name:"Ionian Boots of Lucidity", img:"icon_items/Boots/Ionian_Boots_of_Lucidity.webp" },
+  { name:"Mercury's Treads",         img:"icon_items/Boots/Mercury's_Treads.webp" },
+  { name:"Plated Steelcaps",         img:"icon_items/Boots/Plated_Steelcaps.webp" },
+  { name:"Sorcerer's Shoes",         img:"icon_items/Boots/Sorcerer's_Shoes.png" },
+];
+const ITEMS = [
+  { name:"Abyssal Mask",             img:"icon_items/Items/Abyssal_Mask.webp" },
+  { name:"Actualizer",               img:"icon_items/Items/Actualizer.webp" },
+  { name:"Ardent Censer",            img:"icon_items/Items/Ardent_Censer.webp" },
+  { name:"Axiom Arc",                img:"icon_items/Items/Axiom_Arc.webp" },
+  { name:"Bandlepipes",              img:"icon_items/Items/Bandlepipes.webp" },
+  { name:"Banshee's Veil",           img:"icon_items/Items/Banshee's_Veil.webp" },
+  { name:"Bastionbreaker",           img:"icon_items/Items/Bastionbreaker.webp" },
+  { name:"Black Cleaver",            img:"icon_items/Items/Black_Cleaver.png" },
+  { name:"Blackfire Torch",          img:"icon_items/Items/Blackfire_Torch.png" },
+  { name:"Blade of the Ruined King", img:"icon_items/Items/Blade_of_the_Ruined_King.webp" },
+  { name:"Bloodletter's Curse",      img:"icon_items/Items/Bloodletter's_Curse.webp" },
+  { name:"Bloodthirster",            img:"icon_items/Items/Bloodthirster.webp" },
+  { name:"Chempunk Chainsword",      img:"icon_items/Items/Chempunk_Chainsword.webp" },
+  { name:"Cosmic Drive",             img:"icon_items/Items/Cosmic_Drive.png" },
+  { name:"Cryptbloom",               img:"icon_items/Items/Cryptbloom.webp" },
+  { name:"Dawncore",                 img:"icon_items/Items/Dawncore.png" },
+  { name:"Dead Man's Plate",         img:"icon_items/Items/Dead_Man's_Plate.webp" },
+  { name:"Death's Dance",            img:"icon_items/Items/Death's_Dance.webp" },
+  { name:"Diadem of Songs",          img:"icon_items/Items/Diadem_of_Songs.png" },
+  { name:"Dusk and Dawn",            img:"icon_items/Items/Dusk_and_Dawn.webp" },
+  { name:"Echoes of Helia",          img:"icon_items/Items/Echoes_of_Helia.webp" },
+  { name:"Eclipse",                  img:"icon_items/Items/Eclipse.webp" },
+  { name:"Edge of Night",            img:"icon_items/Items/Edge_of_Night.webp" },
+  { name:"Endless Hunger",           img:"icon_items/Items/Endless_Hunger.png" },
+  { name:"Essence Reaver",           img:"icon_items/Items/Essence_Reaver.webp" },
+  { name:"Experimental Hexplate",    img:"icon_items/Items/Experimental_Hexplate.webp" },
+  { name:"Fiendhunter Bolts",        img:"icon_items/Items/Fiendhunter_Bolts.webp" },
+  { name:"Fimbulwinter",             img:"icon_items/Items/Fimbulwinter.webp" },
+  { name:"Frozen Heart",             img:"icon_items/Items/Frozen_Heart.webp" },
+  { name:"Guardian Angel",           img:"icon_items/Items/Guardian_Angel.webp" },
+  { name:"Guinsoo's Rageblade",      img:"icon_items/Items/Guinsoo's_Rageblade.webp" },
+  { name:"Heartsteel",               img:"icon_items/Items/Heartsteel.webp" },
+  { name:"Hexoptics C44",            img:"icon_items/Items/Hexoptics_C44.webp" },
+  { name:"Hextech Gunblade",         img:"icon_items/Items/Hextech_Gunblade.webp" },
+  { name:"Hextech Rocketbelt",       img:"icon_items/Items/Hextech_Rocketbelt.webp" },
+  { name:"Hollow Radiance",          img:"icon_items/Items/Hollow_Radiance.webp" },
+  { name:"Horizon Focus",            img:"icon_items/Items/Horizon_Focus.webp" },
+  { name:"Hubris",                   img:"icon_items/Items/Hubris.webp" },
+  { name:"Hullbreaker",              img:"icon_items/Items/Hullbreaker.webp" },
+  { name:"Iceborn Gauntlet",         img:"icon_items/Items/Iceborn_Gauntlet.webp" },
+  { name:"Immortal Shieldbow",       img:"icon_items/Items/Immortal_Shieldbow.webp" },
+  { name:"Imperial Mandate",         img:"icon_items/Items/Imperial_Mandate.webp" },
+  { name:"Infinity Edge",            img:"icon_items/Items/Infinity_Edge.webp" },
+  { name:"Jak'Sho, The Protean",     img:"icon_items/Items/Jak'Sho,_The_Protean.webp" },
+  { name:"Kaenic Rookern",           img:"icon_items/Items/Kaenic_Rookern.webp" },
+  { name:"Knight's Vow",             img:"icon_items/Items/Knight's_Vow.webp" },
+  { name:"Kraken Slayer",            img:"icon_items/Items/Kraken_Slayer.webp" },
+  { name:"Liandry's Torment",        img:"icon_items/Items/Liandry's_Torment.png" },
+  { name:"Lich Bane",                img:"icon_items/Items/Lich_Bane.webp" },
+  { name:"Locket of the Iron Solari",img:"icon_items/Items/Locket_of_the_Iron_Solari.webp" },
+  { name:"Lord Dominik's Regards",   img:"icon_items/Items/Lord_Dominik's_Regards.webp" },
+  { name:"Luden's Tempest",          img:"icon_items/Items/Luden's_Tempest.png" },
+  { name:"Malignance",               img:"icon_items/Items/Malignance.webp" },
+  { name:"Maw of Malmortius",        img:"icon_items/Items/Maw_of_Malmortius.webp" },
+  { name:"Mejai's Soulstealer",      img:"icon_items/Items/Mejai's_Soulstealer.webp" },
+  { name:"Mercurial Scimitar",       img:"icon_items/Items/Mercurial_Scimitar.webp" },
+  { name:"Mikael's Blessing",        img:"icon_items/Items/Mikael's_Blessing.webp" },
+  { name:"Moonstone Renewer",        img:"icon_items/Items/Moonstone_Renewer.webp" },
+  { name:"Morellonomicon",           img:"icon_items/Items/Morellonomicon.webp" },
+  { name:"Mortal Reminder",          img:"icon_items/Items/Mortal_Reminder.webp" },
+  { name:"Muramana",                 img:"icon_items/Items/Muramana.webp" },
+  { name:"Nashor's Tooth",           img:"icon_items/Items/Nashor's_Tooth.webp" },
+  { name:"Navori Flickerblade",      img:"icon_items/Items/Navori_Flickerblade.png" },
+  { name:"Overlord's Bloodmail",     img:"icon_items/Items/Overlord's_Bloodmail.png" },
+  { name:"Phantom Dancer",           img:"icon_items/Items/Phantom_Dancer.webp" },
+  { name:"Profane Hydra",            img:"icon_items/Items/Profane_Hydra.webp" },
+  { name:"Protoplasm Harness",       img:"icon_items/Items/Protoplasm_Harness.webp" },
+  { name:"Rabadon's Deathcap",       img:"icon_items/Items/Rabadon's_Deathcap.webp" },
+  { name:"Randuin's Omen",           img:"icon_items/Items/Randuin's_Omen.webp" },
+  { name:"Rapid Firecannon",         img:"icon_items/Items/Rapid_Firecannon.webp" },
+  { name:"Ravenous Hydra",           img:"icon_items/Items/Ravenous_Hydra.webp" },
+  { name:"Redemption",               img:"icon_items/Items/Redemption.png" },
+  { name:"Riftmaker",                img:"icon_items/Items/Riftmaker.webp" },
+  { name:"Rod of Ages",              img:"icon_items/Items/Rod_of_Ages.webp" },
+  { name:"Runaan's Hurricane",       img:"icon_items/Items/Runaan's_Hurricane.png" },
+  { name:"Rylai's Crystal Scepter",  img:"icon_items/Items/Rylai's_Crystal_Scepter.webp" },
+  { name:"Seraph's Embrace",         img:"icon_items/Items/Seraph's_Embrace.webp" },
+  { name:"Serpent's Fang",           img:"icon_items/Items/Serpent's_Fang.webp" },
+  { name:"Serylda's Grudge",         img:"icon_items/Items/Serylda's_Grudge.webp" },
+  { name:"Shadowflame",              img:"icon_items/Items/Shadowflame.webp" },
+  { name:"Shurelya's Battlesong",    img:"icon_items/Items/Shurelya's_Battlesong.webp" },
+  { name:"Spear of Shojin",          img:"icon_items/Items/Spear_of_Shojin.png" },
+  { name:"Spirit Visage",            img:"icon_items/Items/Spirit_Visage.webp" },
+  { name:"Staff of Flowing Water",   img:"icon_items/Items/Staff_of_Flowing_Water.webp" },
+  { name:"Statikk Shiv",             img:"icon_items/Items/Statikk_Shiv.webp" },
+  { name:"Sterak's Gage",            img:"icon_items/Items/Sterak's_Gage.png" },
+  { name:"Stormrazor",               img:"icon_items/Items/Stormrazor.webp" },
+  { name:"Stormsurge",               img:"icon_items/Items/Stormsurge.webp" },
+  { name:"Stridebreaker",            img:"icon_items/Items/Stridebreaker.webp" },
+  { name:"Sundered Sky",             img:"icon_items/Items/Sundered_Sky.webp" },
+  { name:"Sunfire Aegis",            img:"icon_items/Items/Sunfire_Aegis.webp" },
+  { name:"Terminus",                 img:"icon_items/Items/Terminus.png" },
+  { name:"The Collector",            img:"icon_items/Items/The_Collector.webp" },
+  { name:"Thornmail",                img:"icon_items/Items/Thornmail.webp" },
+  { name:"Titanic Hydra",            img:"icon_items/Items/Titanic_Hydra.png" },
+  { name:"Trinity Force",            img:"icon_items/Items/Trinity_Force.png" },
+  { name:"Umbral Glaive",            img:"icon_items/Items/Umbral_Glaive.webp" },
+  { name:"Unending Despair",         img:"icon_items/Items/Unending_Despair.png" },
+  { name:"Void Staff",               img:"icon_items/Items/Void_Staff.webp" },
+  { name:"Voltaic Cyclosword",       img:"icon_items/Items/Voltaic_Cyclosword.webp" },
+  { name:"Warmog's Armor",           img:"icon_items/Items/Warmog's_Armor.webp" },
+  { name:"Whispering Circlet",       img:"icon_items/Items/Whispering_Circlet.webp" },
+  { name:"Wit's End",                img:"icon_items/Items/Wit's_End.png" },
+  { name:"Youmuu's Ghostblade",      img:"icon_items/Items/Youmuu's_Ghostblade.webp" },
+  { name:"Yun Tal Wildarrows",       img:"icon_items/Items/Yun_Tal_Wildarrows.png" },
+  { name:"Zeke's Convergence",       img:"icon_items/Items/Zeke's_Convergence.webp" },
+  { name:"Zhonya's Hourglass",       img:"icon_items/Items/Zhonya's_Hourglass.webp" },
+];
+/* Objets de soutien (quête Support) : un seul est tiré pour le rôle Supp,
+   en plus de 4 objets classiques + bottes (6 au total). */
+const SUPPORT_ITEMS = [
+  { name:"Bloodsong",               img:"icon_items/Support/Bloodsong.webp" },
+  { name:"Celestial Opposition",    img:"icon_items/Support/Celestial_Opposition.webp" },
+  { name:"Dream Maker",             img:"icon_items/Support/Dream_Maker.webp" },
+  { name:"Solstice Sleigh",         img:"icon_items/Support/Solstice_Sleigh.webp" },
+  { name:"Zaz'Zak's Realmspike",    img:"icon_items/Support/Zaz'Zak's_Realmspike.webp" },
+];
+
+function pickUnique(arr, n) { return shuffle([...arr]).slice(0, n); }
+
+function rollOneBravery(role) {
+  const trees = Object.keys(RUNE_TREES);
+  const primaryName = trees[Math.floor(Math.random()*trees.length)];
+  const secondaryName = trees.filter(t => t !== primaryName)[Math.floor(Math.random()*(trees.length-1))];
+  const primary = RUNE_TREES[primaryName], secondary = RUNE_TREES[secondaryName];
+  const keystone = primary.keystones[Math.floor(Math.random()*primary.keystones.length)];
+  const primaryMinors = pickUnique(primary.minors, 3);
+  const secondaryMinors = pickUnique(secondary.minors, 2);
+  const shards = STAT_SHARDS.map(row => row[Math.floor(Math.random()*row.length)]);
+  const boots = BOOTS[Math.floor(Math.random()*BOOTS.length)];
+  // ADC : bottes + 6 objets (7 au total) — Supp : bottes + 1 objet support + 4 objets (6 au total) — autres : bottes + 5 objets (6 au total)
+  let items;
+  if (role === 'Supp') {
+    const supportItem = SUPPORT_ITEMS[Math.floor(Math.random()*SUPPORT_ITEMS.length)];
+    items = [supportItem, ...pickUnique(ITEMS, 4)];
+  } else {
+    const itemCount = role === 'ADC' ? 6 : 5;
+    items = pickUnique(ITEMS, itemCount);
+  }
+  return {
+    primaryName, secondaryName,
+    primaryColor: primary.color, secondaryColor: secondary.color,
+    keystone, primaryMinors, secondaryMinors, shards, boots, items,
+  };
+}
+
+let lastBravery1 = null, lastBravery2 = null;
+
+function runeImgTag(name, cls) {
+  const url = runeIcon(name);
+  if (!url) return `<span class="${cls} bravery-fallback">${esc(name)}</span>`;
+  return `<img class="${cls}" src="${url}" alt="${esc(name)}" title="${esc(name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'${cls} bravery-fallback',textContent:'${esc(name).replace(/'/g,"\\'")}'}))">`;
+}
+function itemImgTag(item) {
+  return `<img class="bravery-item-icon" src="${item.img}" alt="${esc(item.name)}" title="${esc(item.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bravery-item-icon bravery-fallback',textContent:'${esc(item.name).replace(/'/g,"\\'")}'}))">`;
+}
+
+
+function buildBraveryCard(player, champ, build, color, side, idx, role) {
+  const buildSteps = [build.boots, ...build.items];
+  const champBlock = champ
+    ? `<div class="card-champ-wrap bravery-champ-wrap">
+         <img class="card-champ-img" src="icon_champion/${champ}_0.jpg" alt="${champ}" onerror="this.style.display='none'">
+         <button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('${side}',${idx})" title="Je n'ai pas ce champion — relancer">
+           <i class="ti ti-refresh"></i>
+         </button>
+       </div>`
+    : '';
+  const roleBlock = role
+    ? `<div class="bravery-role"><img src="${ROLE_IMG[role]}" alt="${role}" title="${role}"></div>`
+    : '';
+  return `<div class="bravery-card team-${color}">
+    <div class="bravery-hd">
+      ${roleBlock}
+      <span class="bravery-player">${esc(player.name)}</span>
+      <div class="bravery-champ-block">
+        <span class="bravery-champ">${champ ? champ : '—'}</span>
+        ${champBlock}
+      </div>
+    </div>
+    <div class="bravery-runes">
+      <div class="bravery-rune-row">
+        <span class="bravery-tree-dot" style="background:${build.primaryColor}" title="${esc(build.primaryName)}"></span>
+        ${runeImgTag(build.keystone, 'bravery-keystone-icon')}
+        ${build.primaryMinors.map(m=>runeImgTag(m, 'bravery-minor-icon')).join('')}
+      </div>
+      <div class="bravery-rune-row">
+        <span class="bravery-tree-dot" style="background:${build.secondaryColor}" title="${esc(build.secondaryName)}"></span>
+        ${build.secondaryMinors.map(m=>runeImgTag(m, 'bravery-minor-icon')).join('')}
+        <span class="bravery-shard-sep"></span>
+        ${build.shards.map((s)=>{
+          const sh = SHARD_ICONS[s];
+          return sh
+            ? `<img class="bravery-shard-icon" src="${sh.img}" alt="${esc(sh.fr)}" title="${esc(sh.fr)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'bravery-fallback',textContent:'${esc(sh.fr).replace(/'/g,"\\'")}'}))">`
+            : `<span class="bravery-fallback">${esc(s)}</span>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="bravery-build">
+      ${buildSteps.map((it)=>`<span class="bravery-step">${itemImgTag(it)}</span>`).join('<i class="ti ti-chevron-right bravery-arrow"></i>')}
+    </div>
+  </div>`;
+}
+
+/* Section d'équipe en mode Téméraire : même en-tête que buildTeamSection,
+   mais avec des cartes runes + build au lieu des cartes joueur classiques. */
+function buildBraveryTeamSection(title, players, score, champs, braveryArr, color, side, roles) {
+  // Affiche toujours les cartes dans l'ordre Top → Jungle → Mid → ADC → Supp
+  // (uniquement l'ordre d'affichage, le tirage aléatoire lui n'est pas modifié).
+  let order = players.map((p, i) => i);
+  if (roles) {
+    const roleOrder = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
+    order.sort((a, b) => roleOrder.indexOf(roles[a]) - roleOrder.indexOf(roles[b]));
+  }
+  const cards = order.map(i=>buildBraveryCard(players[i], champs?champs[i]:null, braveryArr[i], color, side, i, roles?roles[i]:null)).join('');
+  const header = title
+    ? (() => {
+        const avg = rankInfo(Math.round(score/players.length));
+        return `<div class="team-hd"><span class="team-title ${color}">${title}</span><span class="team-score-lbl">${score} pts · moy. ${avg.label}</span></div>`;
+      })()
+    : '';
+  return `<div class="team-section">${header}<div class="bravery-grid">${cards}</div></div>`;
+}
+
+/* ─── Rendu unifié du résultat : bascule entre l'affichage classique
+   et le Mode Téméraire selon la case cochée, utilisé par generate()
+   et toutes les fonctions de relance. ─── */
+function renderResult() {
+  const braveryOn = document.getElementById('braveryToggle').checked && lastBravery1;
+  if (currentMode === 'flex') {
+    document.getElementById('teamsGrid').className = 'teams-grid mode-single';
+    document.getElementById('teamsGrid').innerHTML = braveryOn
+      ? buildBraveryTeamSection(null, lastT1, null, lastChamps1, lastBravery1, 'gold', 'flex', lastRoles1)
+      : buildFlexCards('⚔️ Ton équipe', lastT1, lastRoles1, lastChamps1, 'gold');
+  } else {
+    document.getElementById('teamsGrid').className = braveryOn ? 'teams-grid bravery-active' : 'teams-grid';
+    document.getElementById('teamsGrid').innerHTML = braveryOn
+      ? buildBraveryTeamSection('🔵 Équipe 1', lastT1, lastS1, lastChamps1, lastBravery1, 'blue', 'team1', lastRoles1) +
+        buildBraveryTeamSection('🔴 Équipe 2', lastT2, lastS2, lastChamps2, lastBravery2, 'red', 'team2', lastRoles2)
+      : buildTeamSection('🔵 Équipe 1', lastT1, lastS1, lastRoles1, lastChamps1, 'blue', 'team1') +
+        buildTeamSection('🔴 Équipe 2', lastT2, lastS2, lastRoles2, lastChamps2, 'red', 'team2');
+  }
+}
+
+async function rerollBraveryOnly() {
+  if (!lastT1 || !lastT1.length) return;
+  lastBravery1 = lastT1.map((p,i) => rollOneBravery(lastRoles1 ? lastRoles1[i] : null));
+  lastBravery2 = (lastT2 && lastT2.length) ? lastT2.map((p,i) => rollOneBravery(lastRoles2 ? lastRoles2[i] : null)) : [];
+  renderResult();
+}
+
+async function rerollBraveryAll() {
+  if (!lastT1 || !lastT1.length) return;
+  if (currentMode === 'flex') {
+    lastChamps1 = lastRoles1 ? pickChampsForRoles(lastRoles1) : pickChampions(lastT1.length);
+  } else {
+    if (lastRoles1) {
+      const used = new Set();
+      lastChamps1 = lastRoles1.map(r => pickChampForRole(r, used));
+      lastChamps2 = lastRoles2.map(r => pickChampForRole(r, used));
+    } else {
+      const pick = pickChampions(lastT1.length + lastT2.length);
+      lastChamps1 = pick.slice(0, lastT1.length); lastChamps2 = pick.slice(lastT1.length);
+    }
+  }
+  lastBravery1 = lastT1.map((p,i) => rollOneBravery(lastRoles1 ? lastRoles1[i] : null));
+  lastBravery2 = (lastT2 && lastT2.length) ? lastT2.map((p,i) => rollOneBravery(lastRoles2 ? lastRoles2[i] : null)) : [];
+  renderResult();
+}
 
 
 /* ─── Players ─── */
@@ -892,11 +1448,12 @@ function bestSplit(arr) {
 }
 
 /* ─── Generate ─── */
-function generate() {
+async function generate() {
   document.getElementById('errorMsg').style.display='none';
   const valid=players.filter(p=>p.name.trim());
-  const useRoles=document.getElementById('rolesToggle').checked;
-  const useChamps=document.getElementById('champToggle').checked;
+  const braveryOn=document.getElementById('braveryToggle').checked;
+  const useRoles=document.getElementById('rolesToggle').checked || braveryOn;
+  const useChamps=document.getElementById('champToggle').checked || braveryOn;
 
   if (currentMode === 'flex') {
     if (valid.length < 1) return showError('Ajoute au moins 1 joueur.');
@@ -908,8 +1465,6 @@ function generate() {
     lastT1=valid; lastT2=[]; lastS1=score; lastS2=0;
     lastRoles1=roles; lastRoles2=null; lastChamps1=champs; lastChamps2=null;
     document.getElementById('sessionTitle').textContent = 'Ton équipe Flex';
-    document.getElementById('teamsGrid').className = 'teams-grid mode-single';
-    document.getElementById('teamsGrid').innerHTML = buildFlexCards('⚔️ Ton équipe', valid, roles, champs, 'gold');
     document.getElementById('diffRow').innerHTML = '';
   } else {
     if (valid.length < 2) return showError('Ajoute au moins 2 joueurs.');
@@ -931,19 +1486,25 @@ function generate() {
     const s1=t1.reduce((a,p)=>a+p.rank,0), s2=t2.reduce((a,p)=>a+p.rank,0);
     lastT1=t1; lastT2=t2; lastS1=s1; lastS2=s2;
     lastRoles1=roles1; lastRoles2=roles2; lastChamps1=champs1; lastChamps2=champs2;
-    document.getElementById('teamsGrid').className = 'teams-grid';
-    document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1',t1,s1,roles1,champs1,'blue','team1') +
-      buildTeamSection('🔴 Équipe 2',t2,s2,roles2,champs2,'red','team2');
     const ctxt=combos>1?` · ${combos} combinaisons équitables`:'';
     document.getElementById('diffRow').innerHTML = `Diff : <strong>${diff} pt${diff!==1?'s':''}</strong>${ctxt}`;
-    document.getElementById('rerollRolesBtn').style.display = useRoles?'inline-flex':'none';
-    document.getElementById('rerollChampsBtn').style.display = useChamps?'inline-flex':'none';
   }
+
+  if (braveryOn) {
+      lastBravery1 = lastT1.map((p,i) => rollOneBravery(lastRoles1 ? lastRoles1[i] : null));
+    lastBravery2 = (lastT2 && lastT2.length) ? lastT2.map((p,i) => rollOneBravery(lastRoles2 ? lastRoles2[i] : null)) : [];
+  } else {
+    lastBravery1 = null; lastBravery2 = null;
+  }
+
+  renderResult();
+
   document.getElementById('placeholder').style.display='none';
   document.getElementById('result').style.display='flex';
-  document.getElementById('rerollRolesBtn').style.display = useRoles?'inline-flex':'none';
-  document.getElementById('rerollChampsBtn').style.display = useChamps?'inline-flex':'none';
+  document.getElementById('rerollRolesBtn').style.display = (useRoles && !braveryOn)?'inline-flex':'none';
+  document.getElementById('rerollChampsBtn').style.display = (useChamps && !braveryOn)?'inline-flex':'none';
+  document.getElementById('rerollBraveryOnlyBtn').style.display = braveryOn?'inline-flex':'none';
+  document.getElementById('rerollBraveryAllBtn').style.display = braveryOn?'inline-flex':'none';
 }
 
 function rerollRoles() {
@@ -951,23 +1512,15 @@ function rerollRoles() {
   if(currentMode==='flex') {
     lastRoles1=shuffle(ROLES);
     if(lastChamps1) lastChamps1 = pickChampsForRoles(lastRoles1); // synchro champions/roles
-    document.getElementById('teamsGrid').className = 'teams-grid mode-single';
-    document.getElementById('teamsGrid').innerHTML = buildFlexCards('⚔️ Ton équipe',lastT1,lastRoles1,lastChamps1,'gold');
   } else {
     lastRoles1=shuffle(ROLES); lastRoles2=shuffle(ROLES);
-    document.getElementById('teamsGrid').className = 'teams-grid';
-    document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue','team1')+
-      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red','team2');
   }
+  renderResult();
 }
 function rerollChampions() {
   if(!lastT1.length) return;
   if(currentMode==='flex') {
     lastChamps1 = lastRoles1 ? pickChampsForRoles(lastRoles1) : pickChampions(lastT1.length);
-    document.getElementById('teamsGrid').className = 'teams-grid mode-single';
-    document.getElementById('teamsGrid').innerHTML =
-      buildFlexCards('⚔️ Ton équipe',lastT1,lastRoles1,lastChamps1,'gold');
   } else {
     if (lastRoles1) {
       const used = new Set();
@@ -977,11 +1530,8 @@ function rerollChampions() {
       const pick=pickChampions(lastT1.length+lastT2.length);
       lastChamps1=pick.slice(0,lastT1.length); lastChamps2=pick.slice(lastT1.length);
     }
-    document.getElementById('teamsGrid').className = 'teams-grid';
-    document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1',lastT1,lastS1,lastRoles1,lastChamps1,'blue','team1')+
-      buildTeamSection('🔴 Équipe 2',lastT2,lastS2,lastRoles2,lastChamps2,'red','team2');
   }
+  renderResult();
 }
 
 function showError(msg) { const el=document.getElementById('errorMsg'); el.textContent=msg; el.style.display='block'; }
@@ -1001,17 +1551,21 @@ function rerollSinglePlayer(side, idx) {
 
   const newChamp = role ? pickChampForRole(role, used) : pickChampions(CHAMPIONS.length).find(c => !used.has(c)) || current;
 
-  if (side === 'flex') lastChamps1[idx] = newChamp;
+  if (currentMode === 'flex') lastChamps1[idx] = newChamp;
   else if (side === 'team1') lastChamps1[idx] = newChamp;
   else lastChamps2[idx] = newChamp;
 
-  if (currentMode === 'flex') {
-    document.getElementById('teamsGrid').innerHTML = buildFlexCards('⚔️ Ton équipe', lastT1, lastRoles1, lastChamps1, 'gold');
-  } else {
-    document.getElementById('teamsGrid').innerHTML =
-      buildTeamSection('🔵 Équipe 1', lastT1, lastS1, lastRoles1, lastChamps1, 'blue', 'team1') +
-      buildTeamSection('🔴 Équipe 2', lastT2, lastS2, lastRoles2, lastChamps2, 'red', 'team2');
+  // En Mode Téméraire, relancer le champion d'un joueur relance aussi
+  // ses runes et son build, puisque tout est censé être imposé ensemble.
+  const braveryOn = document.getElementById('braveryToggle').checked;
+  if (braveryOn) {
+    const newBravery = rollOneBravery(role);
+    if (currentMode === 'flex') lastBravery1[idx] = newBravery;
+    else if (side === 'team1') lastBravery1[idx] = newBravery;
+    else lastBravery2[idx] = newBravery;
   }
+
+  renderResult();
 }
 
 
@@ -1121,7 +1675,7 @@ function buildTeamSection(title, players, score, roles, champs, color, side) {
 
 /* ─── Init ─── */
 document.getElementById('savedRankField').outerHTML = renderRankField('savedRankField', 3);
-renderGrid(); loadFromStorage(); updateRolesToggleVisibility();
+renderGrid(); loadFromStorage(); updateRolesToggleVisibility(); updateBraveryToggleAvailability();
 </script>
 </body>
 </html>

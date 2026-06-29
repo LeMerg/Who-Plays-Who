@@ -1,39 +1,21 @@
-# Who Plays Who
+# ⚔️ Who Plays Who
 
-Application web locale pour générer des équipes équilibrées lors de soirées gaming entre amis (League of Legends & Valorant). Fonctionne entièrement dans le navigateur, sans serveur ni installation — basée sur la fusion des projets Team Maker et Who Plays Who.
+**Who Plays Who** est une application web qui crée automatiquement des équipes équilibrées pour vos parties personnalisées entre amis, sur **League of Legends** et **Valorant** (Pour L'instant).
 
-## Lancement
+Ajoute tes joueurs, indique leur rang, et laisse l'algorithme répartir les équipes les plus équitables possible — avec attribution aléatoire des rôles et des champions/agents.
 
-```bash
-python3 -m http.server 8000
-```
-Puis ouvrir http://localhost:8000
+Aucune installation, aucun serveur, aucune création de compte : tout fonctionne directement dans le navigateur.
 
-## Nouveautés par rapport aux deux projets d'origine
+---
 
-- Identité visuelle "Who Plays Who" (logo officiel intégré dans la navbar des 3 pages)
-- Relance individuelle d'un joueur : un bouton ↻ sur chaque portrait de champion/agent permet
-  de retirer uniquement le champion/agent de CE joueur (utile si le joueur ne possède pas le
-  champion tiré), sans toucher aux équipes, rôles, ou autres joueurs.
-- Reprend l'ensemble des fonctionnalités de Team Maker : limite de 10 joueurs, compteur "x/10",
-  système de points par rang (facilement modifiable dans le tableau RANKS), algorithme
-  d'équilibrage par partition exacte, relance globale / rôles seuls / champions-agents seuls,
-  joueurs enregistrés en localStorage, roulette de maps Valorant, etc.
+## ✨ Fonctionnalités
 
-## Système de points (modifiable dans le code, tableau `RANKS`)
-
-Débutant=0, Iron=1, Bronze=2, Silver=3, Gold=4, Platine=5, Émeraude=6 (LoL), Diamant=7,
-Master/Ascendant=8, Grandmaster/Immortal=9, Challenger/Radiant=10.
-
-## Structure
-
-```
-WhoPlaysWho/
-├── index.html        # Choix du jeu
-├── TeamLol.html       # App League of Legends
-├── TeamValo.html       # App Valorant
-├── Logo_Site/W.png     # Logo officiel "Who Plays Who"
-├── icon_champion/, icon_agent/, icon_rank_lol/, img_rank_valo/
-├── roles_lol/, roles_valo/, img/ (maps Valorant)
-└── shared/             # rank-picker.js / .css (composant réutilisable)
-```
+- **Équilibrage automatique** des équipes selon les points de rang de chaque joueur (algorithme de partition exacte, minimise l'écart entre les deux équipes)
+- **Modes de jeu** : Custom (2 à 10 joueurs, 2 équipes) et Flex / Five Stack (1 à 5 joueurs, une seule équipe)
+- **Rôles aléatoires** : Top / Jungle / Mid / ADC / Support pour LoL, Duelist / Initiator / Controller / Sentinel pour Valorant (mapping agent → rôle strictement respecté)
+- **Champions / agents aléatoires**, uniques par partie, assignés selon le rôle de chacun
+- **Relances séparées** : tout relancer, relancer seulement les rôles, relancer seulement les champions/agents, ou relancer **un seul joueur** (utile s'il ne possède pas le champion tiré)
+- **Joueurs enregistrés** en local (`localStorage`) avec recherche et autocomplétion — pratique même avec une grosse liste de joueurs
+- **Roulette de maps** pour Valorant
+- **Limite stricte de 10 joueurs** par partie personnalisée, avec compteur en temps réel
+- Aucune donnée envoyée à un serveur : tout reste dans ton navigateur
