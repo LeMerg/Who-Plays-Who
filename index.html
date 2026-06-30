@@ -70,6 +70,18 @@
     .nav-sub   { font-family:var(--font-mono); font-size:9px; color:var(--gold); text-transform:uppercase; letter-spacing:0.16em; }
     .nav-meta  { font-family:var(--font-mono); font-size:11px; color:var(--text-2); letter-spacing:0.04em; display:flex; align-items:center; gap:8px; }
     .nav-meta .dot { width:5px; height:5px; border-radius:50%; background:#4ADE80; box-shadow:0 0 8px rgba(74,222,128,0.6); }
+    .nav-right { display:flex; align-items:center; gap:16px; }
+    .lang-switch {
+      display:flex; align-items:center; border:1px solid var(--hair-2); overflow:hidden;
+      clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,0 100%);
+    }
+    .lang-switch button {
+      font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:0.06em;
+      background:transparent; border:none; color:var(--text-2); padding:6px 11px; cursor:pointer;
+      transition:all 0.15s;
+    }
+    .lang-switch button.active { background:var(--gold); color:#0D0D10; }
+    .lang-switch button:not(.active):hover { color:var(--text); background:rgba(255,255,255,0.04); }
 
     /* ── Hero ── */
     .hero {
@@ -200,27 +212,31 @@
       <div class="nav-icon"><img src="Logo_Site/W.png" alt="Who Plays Who"></div>
       <div>
         <div class="nav-title">Who Plays Who</div>
-        <div class="nav-sub">Équipes équilibrées</div>
+        <div class="nav-sub" data-i18n="navSub">Équipes équilibrées</div>
       </div>
     </a>
-    <div class="nav-meta"><span class="dot"></span>100% local · aucune donnée envoyée</div>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button id="langFr" onclick="setLang('fr')">FR</button>
+        <button id="langEn" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
   </nav>
 
   <section class="hero">
-    <span class="tag"><span class="dot"></span>Soirées gaming entre amis</span>
-    <h1 class="hero-title">Des équipes <em>équilibrées</em><br>en un clic</h1>
-    <p class="hero-sub">Ajoute tes joueurs, active les options que tu veux — rôles, champions, agents — et laisse l'algorithme créer les équipes les plus équitables possible.</p>
+    <h1 class="hero-title" data-i18n="heroTitle">Des équipes <em>équilibrées</em><br>en un clic</h1>
+    <p class="hero-sub" data-i18n="heroSub">Ajoute tes joueurs, active les options, rôles, champions/agents que tu veux et laisse l'algorithme créer les équipes les plus équitables possible.</p>
     <div class="hero-stats">
-      <div class="stat"><span class="stat-num">173</span><span class="stat-lbl">Champions LoL</span></div>
+      <div class="stat"><span class="stat-num">173</span><span class="stat-lbl" data-i18n="statLol">Champions LoL</span></div>
       <div class="stat-sep"></div>
-      <div class="stat"><span class="stat-num">29</span><span class="stat-lbl">Agents Valo</span></div>
+      <div class="stat"><span class="stat-num">29</span><span class="stat-lbl" data-i18n="statAgents">Agents Valo</span></div>
       <div class="stat-sep"></div>
-      <div class="stat"><span class="stat-num">12</span><span class="stat-lbl">Maps Valo</span></div>
+      <div class="stat"><span class="stat-num">12</span><span class="stat-lbl" data-i18n="statMaps">Maps Valo</span></div>
     </div>
   </section>
 
   <section class="cards-section">
-    <div class="section-label">Choisir un jeu</div>
+    <div class="section-label" data-i18n="chooseGame">Choisir un jeu</div>
     <div class="cards-grid">
       <div class="vs-badge">VS</div>
 
@@ -232,11 +248,11 @@
         <div class="card-name">League of Legends</div>
         <div class="card-features">
           <div class="card-feature"><i class="ti ti-medal"></i>Iron → Challenger</div>
-          <div class="card-feature"><i class="ti ti-chess-knight"></i>Rôles Top / Jungle / Mid / ADC / Supp</div>
-          <div class="card-feature"><i class="ti ti-cards"></i>Champions aléatoires par rôle</div>
-          <div class="card-feature"><i class="ti ti-layout-grid"></i>Modes Custom & Flex</div>
+          <div class="card-feature"><i class="ti ti-chess-knight"></i><span data-i18n="lolRoles">Rôles Top / Jungle / Mid / ADC / Supp</span></div>
+          <div class="card-feature"><i class="ti ti-cards"></i><span data-i18n="lolChamps">Champions aléatoires par rôle</span></div>
+          <div class="card-feature"><i class="ti ti-layout-grid"></i><span data-i18n="lolModes">Modes Custom & Flex</span></div>
         </div>
-        <span class="card-cta">Lancer <i class="ti ti-arrow-right"></i></span>
+        <span class="card-cta" data-i18n="launch">Lancer <i class="ti ti-arrow-right"></i></span>
       </a>
 
       <a class="game-card valo" href="TeamValo.html">
@@ -247,18 +263,65 @@
         <div class="card-name">Valorant</div>
         <div class="card-features">
           <div class="card-feature"><i class="ti ti-medal"></i>Iron → Radiant</div>
-          <div class="card-feature"><i class="ti ti-shield-half"></i>Rôles Duelist / Initiator / Controller / Sentinel</div>
-          <div class="card-feature"><i class="ti ti-user-circle"></i>Agents aléatoires (rôle respecté)</div>
-          <div class="card-feature"><i class="ti ti-map"></i>Roulette de maps · Modes Custom & Five Stack</div>
+          <div class="card-feature"><i class="ti ti-shield-half"></i><span data-i18n="valoRoles">Rôles Duelist / Initiator / Controller / Sentinel</span></div>
+          <div class="card-feature"><i class="ti ti-user-circle"></i><span data-i18n="valoAgents">Agents aléatoires (rôle respecté)</span></div>
+          <div class="card-feature"><i class="ti ti-map"></i><span data-i18n="valoMaps">Roulette de maps · Modes Custom & Five Stack</span></div>
         </div>
-        <span class="card-cta">Lancer <i class="ti ti-arrow-right"></i></span>
+        <span class="card-cta" data-i18n="launch">Lancer <i class="ti ti-arrow-right"></i></span>
       </a>
 
     </div>
   </section>
 
-  <footer>Who Plays Who — Fait avec ❤️ pour les soirées entre amis</footer>
+  <footer data-i18n="footer">Who Plays Who - Fait pour les soirées entre amis</footer>
 
 </div>
+<script>
+const I18N = {
+  fr: {
+    navSub: "Équipes équilibrées",
+    heroTitle: 'Des équipes <em>équilibrées</em><br>en un clic',
+    heroSub: "Ajoute tes joueurs, active les options, rôles, champions/agents que tu veux et laisse l'algorithme créer les équipes les plus équitables possible.",
+    statLol: "Champions LoL", statAgents: "Agents Valo", statMaps: "Maps Valo",
+    chooseGame: "Choisir un jeu",
+    lolRoles: "Rôles Top / Jungle / Mid / ADC / Supp",
+    lolChamps: "Champions aléatoires par rôle",
+    lolModes: "Modes Custom & Flex",
+    valoRoles: "Rôles Duelist / Initiator / Controller / Sentinel",
+    valoAgents: "Agents aléatoires (rôle respecté)",
+    valoMaps: "Roulette de maps · Modes Custom & Five Stack",
+    launch: 'Lancer <i class="ti ti-arrow-right"></i>',
+    footer: "Who Plays Who - Fait pour les soirées entre amis",
+  },
+  en: {
+    navSub: "Balanced teams",
+    heroTitle: 'Balanced teams<br>in <em>one click</em>',
+    heroSub: "Add your players, toggle the options you want - roles, champions/agents - and let the algorithm build the fairest teams possible.",
+    statLol: "LoL Champions", statAgents: "Valo Agents", statMaps: "Valo Maps",
+    chooseGame: "Choose a game",
+    lolRoles: "Top / Jungle / Mid / ADC / Supp roles",
+    lolChamps: "Random champions per role",
+    lolModes: "Custom & Flex modes",
+    valoRoles: "Duelist / Initiator / Controller / Sentinel roles",
+    valoAgents: "Random agents (role-respecting)",
+    valoMaps: "Map roulette · Custom & Five Stack modes",
+    launch: 'Launch <i class="ti ti-arrow-right"></i>',
+    footer: "Who Plays Who - Made for game nights with friends",
+  },
+};
+
+function setLang(lang) {
+  localStorage.setItem('wpw_lang', lang);
+  document.documentElement.lang = lang;
+  document.getElementById('langFr').classList.toggle('active', lang === 'fr');
+  document.getElementById('langEn').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (I18N[lang][key] !== undefined) el.innerHTML = I18N[lang][key];
+  });
+}
+
+setLang(localStorage.getItem('wpw_lang') || 'fr');
+</script>
 </body>
 </html>

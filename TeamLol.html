@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Who Plays Who — League of Legends</title>
+  <title>Who Plays Who - League of Legends</title>
   <link rel="icon" type="image/png" href="Logo_Site/W.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,6 +46,15 @@
     /* ── Brand ── */
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; padding: 0.25rem 0; }
     .brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--gold-d), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 12px rgba(200,170,110,0.3); overflow:hidden; padding:6px; } .brand-icon img{width:100%;height:100%;object-fit:contain;}
+    .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .lang-switch { display:flex; align-items:center; border:1px solid var(--border-h); flex-shrink:0; }
+    .lang-switch button {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      background: transparent; border: none; color: var(--text-2); padding: 5px 9px; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lang-switch button.active { background: var(--gold); color: #0D0D10; }
+    .lang-switch button:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.04); }
     .brand-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
     .brand-sub { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1px; }
 
@@ -192,7 +201,7 @@
     .team-score-lbl { font-size: 11px; color: var(--text-2); }
 
     /* ══════════════════════════════════════════
-       PLAYER CARDS — signature design element
+       PLAYER CARDS - signature design element
     ══════════════════════════════════════════ */
     .player-cards { display: flex; flex-direction: column; gap: 8px; }
 
@@ -368,7 +377,7 @@
     }
 
     /* ════════════════════════════════════════════════════════
-       REFONTE VISUELLE — identité broadcast / esport premium
+       REFONTE VISUELLE - identité broadcast / esport premium
        (signature : panneaux à coin coupé façon overlay de diffusion,
        typographie display + mono façon scoreboard)
     ════════════════════════════════════════════════════════ */
@@ -427,7 +436,7 @@
     .btn-primary:hover::after { left: 130%; }
     .btn-ghost, .btn-icon { clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%); }
 
-    /* Accessibilité — focus visible */
+    /* Accessibilité - focus visible */
     a:focus-visible, button:focus-visible, input:focus-visible, .player-card:focus-visible {
       outline: 2px solid var(--gold); outline-offset: 2px;
     }
@@ -486,13 +495,19 @@
   <aside class="panel">
     <div class="panel-inner">
 
-      <a href="index.html" class="brand">
-        <div class="brand-icon"><img src="Logo_Site/W.png" alt="Who Plays Who"></div>
-        <div>
-          <div class="brand-name">Who Plays Who</div>
-          <div class="brand-sub">League of Legends</div>
+      <div class="brand-row">
+        <a href="index.html" class="brand">
+          <div class="brand-icon"><img src="Logo_Site/W.png" alt="Who Plays Who"></div>
+          <div>
+            <div class="brand-name">Who Plays Who</div>
+            <div class="brand-sub">League of Legends</div>
+          </div>
+        </a>
+        <div class="lang-switch">
+          <button id="langFr" onclick="setLang('fr')">FR</button>
+          <button id="langEn" onclick="setLang('en')">EN</button>
         </div>
-      </a>
+      </div>
 
       <div class="div"></div>
 
@@ -506,10 +521,10 @@
       </div>
 
       <div>
-        <p class="lbl">Joueurs <span class="cnt" id="playerCount">0 / 10</span></p>
+        <p class="lbl"><span data-i18n="players">Joueurs</span> <span class="cnt" id="playerCount">0 / 10</span></p>
         <div class="player-grid" id="playerGrid"></div>
         <button class="btn-ghost sm" onclick="addPlayer()" id="addBtn" style="margin-top:5px; width:100%; justify-content:center;">
-          <i class="ti ti-plus"></i> Ajouter un joueur
+          <i class="ti ti-plus"></i> <span data-i18n="addPlayer">Ajouter un joueur</span>
         </button>
       </div>
 
@@ -518,31 +533,31 @@
       <div class="toggle-row" id="rolesToggleRow">
         <input type="checkbox" id="rolesToggle">
         <label for="rolesToggle">
-          <span class="tgl-title">Rôles aléatoires</span>
-          <span class="tgl-sub" id="rolesToggleSub">Top · Jungle · Mid · ADC · Supp</span>
+          <span class="tgl-title" data-i18n="randomRoles">Rôles aléatoires</span>
+          <span class="tgl-sub" id="rolesToggleSub" data-i18n="rolesSub">Top · Jungle · Mid · ADC · Supp</span>
         </label>
       </div>
 
       <div class="toggle-row">
         <input type="checkbox" id="champToggle" onchange="updateBraveryToggleAvailability()">
         <label for="champToggle">
-          <span class="tgl-title">Champions aléatoires</span>
-          <span class="tgl-sub">Un champion unique par joueur</span>
+          <span class="tgl-title" data-i18n="randomChamps">Champions aléatoires</span>
+          <span class="tgl-sub" data-i18n="champsSub">Un champion unique par joueur</span>
         </label>
       </div>
 
       <div class="toggle-row" id="braveryToggleRow">
         <input type="checkbox" id="braveryToggle" onchange="updateRolesLockForBravery()">
         <label for="braveryToggle">
-          <span class="tgl-title"><i class="ti ti-dice-5"></i> Mode Téméraire</span>
-          <span class="tgl-sub" id="braveryToggleSub">Runes + build imposés au hasard</span>
+          <span class="tgl-title"><i class="ti ti-dice-5"></i> <span data-i18n="braveryMode">Mode Téméraire</span></span>
+          <span class="tgl-sub" id="braveryToggleSub" data-i18n="braverySub">Runes + build imposés au hasard</span>
         </label>
       </div>
 
       <p class="error-msg" id="errorMsg"></p>
 
       <button class="btn-primary" onclick="generate()">
-        <i class="ti ti-shield-half"></i> Générer les équipes
+        <i class="ti ti-shield-half"></i> <span data-i18n="generateTeams">Générer les équipes</span>
       </button>
 
     </div>
@@ -553,26 +568,26 @@
     <div class="main-inner">
       <div class="placeholder" id="placeholder">
         <div class="placeholder-icon">⚔️</div>
-        <p>Configure ta partie à gauche,<br>puis génère les équipes.</p>
+        <p data-i18n="placeholderText">Configure ta partie à gauche,<br>puis génère les équipes.</p>
       </div>
       <div class="result" id="result">
         <div class="result-hd">
           <h2 id="sessionTitle"></h2>
           <div class="result-actions">
             <button class="btn-ghost sm" id="rerollRolesBtn" onclick="rerollRoles()" style="display:none">
-              <i class="ti ti-arrows-shuffle"></i> Rôles
+              <i class="ti ti-arrows-shuffle"></i> <span data-i18n="roles">Rôles</span>
             </button>
             <button class="btn-ghost sm" id="rerollChampsBtn" onclick="rerollChampions()" style="display:none">
-              <i class="ti ti-cards"></i> Champions
+              <i class="ti ti-cards"></i> <span data-i18n="champions">Champions</span>
             </button>
             <button class="btn-ghost sm" id="rerollBraveryOnlyBtn" onclick="rerollBraveryOnly()" style="display:none">
-              <i class="ti ti-dice-5"></i> Runes &amp; objets
+              <i class="ti ti-dice-5"></i> <span data-i18n="runesItems">Runes &amp; objets</span>
             </button>
             <button class="btn-ghost sm" id="rerollBraveryAllBtn" onclick="rerollBraveryAll()" style="display:none">
-              <i class="ti ti-refresh-dot"></i> Tout relancer
+              <i class="ti ti-refresh-dot"></i> <span data-i18n="rerollAll">Tout relancer</span>
             </button>
             <button class="btn-ghost sm" onclick="generate()">
-              <i class="ti ti-refresh"></i> Regénérer
+              <i class="ti ti-refresh"></i> <span data-i18n="regenerate">Regénérer</span>
             </button>
           </div>
         </div>
@@ -587,34 +602,34 @@
     <div class="panel-inner">
 
       <div class="saved-hd">
-        <p class="lbl" style="margin-bottom:0">Joueurs enregistrés</p>
-        <button class="btn-ghost xs" onclick="openAddSaved()"><i class="ti ti-plus"></i> Nouveau</button>
+        <p class="lbl" style="margin-bottom:0" data-i18n="savedPlayers">Joueurs enregistrés</p>
+        <button class="btn-ghost xs" onclick="openAddSaved()"><i class="ti ti-plus"></i> <span data-i18n="newPlayer">Nouveau</span></button>
       </div>
 
       <div class="storage-status">
         <span class="storage-dot" id="storageDot"></span>
-        <span id="storageLabel">Chargement…</span>
+        <span id="storageLabel" data-i18n="loading">Chargement…</span>
       </div>
 
       <div class="search-wrap">
         <i class="ti ti-search"></i>
-        <input type="text" id="savedSearch" placeholder="Rechercher un joueur…"
+        <input type="text" id="savedSearch" placeholder="Rechercher un joueur…" data-i18n-ph="searchPlayerPh"
           oninput="onSavedSearchInput(this.value)"
           onkeydown="onSavedSearchKeydown(event)"
           onblur="setTimeout(()=>{document.getElementById('savedSuggestions').style.display='none'},150)"
           autocomplete="off">
-        <button class="btn-icon clear" id="savedSearchClear" style="display:none" onclick="clearSavedSearch()" title="Effacer"><i class="ti ti-x"></i></button>
+        <button class="btn-icon clear" id="savedSearchClear" style="display:none" onclick="clearSavedSearch()" title="Effacer" data-i18n-title="clear"><i class="ti ti-x"></i></button>
         <div class="suggestions-dropdown" id="savedSuggestions"></div>
       </div>
 
       <div id="savedList" class="saved-list"></div>
 
       <div class="add-saved-form" id="addSavedForm">
-        <input type="text" id="savedName" placeholder="Nom du joueur">
+        <input type="text" id="savedName" placeholder="Nom du joueur" data-i18n-ph="playerNamePh">
         <div id="savedRankField"></div>
         <div class="add-saved-actions">
-          <button class="btn-ghost sm" onclick="closeAddSaved()">Annuler</button>
-          <button class="btn-primary sm" onclick="saveNewPlayer()">Enregistrer</button>
+          <button class="btn-ghost sm" onclick="closeAddSaved()" data-i18n="cancel">Annuler</button>
+          <button class="btn-primary sm" onclick="saveNewPlayer()" data-i18n="save">Enregistrer</button>
         </div>
       </div>
 
@@ -624,6 +639,78 @@
 
 <script src="shared/rank-picker.js"></script>
 <script>
+/* ════════════════════════════════════════════════════════
+   I18N - FR / EN
+════════════════════════════════════════════════════════ */
+const I18N = {
+  fr: {
+    brandSub: "League of Legends",
+    players: "Joueurs", addPlayer: "Ajouter un joueur",
+    randomRoles: "Rôles aléatoires", rolesSub: "Top · Jungle · Mid · ADC · Supp",
+    randomChamps: "Champions aléatoires", champsSub: "Un champion unique par joueur",
+    braveryMode: "Mode Téméraire", braverySub: "Runes + build imposés au hasard",
+    braverySubLocked: "Requis par le Mode Téméraire",
+    generateTeams: "Générer les équipes",
+    placeholderText: "Configure ta partie à gauche,<br>puis génère les équipes.",
+    roles: "Rôles", champions: "Champions", runesItems: "Runes &amp; objets", rerollAll: "Tout relancer", regenerate: "Regénérer",
+    savedPlayers: "Joueurs enregistrés", newPlayer: "Nouveau", loading: "Chargement…",
+    searchPlayerPh: "Rechercher un joueur…", clear: "Effacer", playerNamePh: "Nom du joueur",
+    cancel: "Annuler", save: "Enregistrer",
+    sessionFlex: "Ton équipe Flex", sessionResult: "Résultat",
+    errMin1: "Ajoute au moins 1 joueur.", errMaxFlex: "Maximum 5 joueurs en mode Flex.",
+    errRoles5: "Les rôles nécessitent 5 joueurs.", errMin2: "Ajoute au moins 2 joueurs.",
+    errEven: "Le nombre de joueurs doit être pair.", errRoles10: "Les rôles nécessitent exactement 10 joueurs.",
+    diffLabel: "Diff", pts: "pts", combosLabel: "combinaisons équitables",
+    noPlayerFound: "Aucun joueur trouvé", noSaved: "Aucun joueur enregistré.", pinHint: "Utilise 🔖 pour épingler.",
+    noResultFor: "Aucun résultat pour", alreadyAdded: "Déjà ajouté", alreadyIn: "Déjà dans la liste", add: "Ajouter",
+    edit: "Modifier", delete: "Supprimer", ok: "OK", name: "Nom",
+    avg: "moy.", unpin: "Retirer des enregistrés", enterName: "Entrez un nom",
+    playerN: "Joueur", remove: "Retirer",
+  },
+  en: {
+    brandSub: "League of Legends",
+    players: "Players", addPlayer: "Add a player",
+    randomRoles: "Random roles", rolesSub: "Top · Jungle · Mid · ADC · Supp",
+    randomChamps: "Random champions", champsSub: "One unique champion per player",
+    braveryMode: "Bravery Mode", braverySub: "Random runes + build imposed",
+    braverySubLocked: "Required by Bravery Mode",
+    generateTeams: "Generate teams",
+    placeholderText: "Set up your game on the left,<br>then generate the teams.",
+    roles: "Roles", champions: "Champions", runesItems: "Runes &amp; items", rerollAll: "Reroll all", regenerate: "Regenerate",
+    savedPlayers: "Saved players", newPlayer: "New", loading: "Loading…",
+    searchPlayerPh: "Search a player…", clear: "Clear", playerNamePh: "Player name",
+    cancel: "Cancel", save: "Save",
+    sessionFlex: "Your Flex team", sessionResult: "Result",
+    errMin1: "Add at least 1 player.", errMaxFlex: "Maximum 5 players in Flex mode.",
+    errRoles5: "Roles require 5 players.", errMin2: "Add at least 2 players.",
+    errEven: "The number of players must be even.", errRoles10: "Roles require exactly 10 players.",
+    diffLabel: "Diff", pts: "pts", combosLabel: "fair combinations",
+    noPlayerFound: "No player found", noSaved: "No saved players.", pinHint: "Use 🔖 to pin.",
+    noResultFor: "No results for", alreadyAdded: "Already added", alreadyIn: "Already in the list", add: "Add",
+    edit: "Edit", delete: "Delete", ok: "OK", name: "Name",
+    avg: "avg.", unpin: "Remove from saved", enterName: "Enter a name",
+    playerN: "Player", remove: "Remove",
+  },
+};
+let CUR_LANG = localStorage.getItem('wpw_lang') || 'fr';
+function t(key) { return (I18N[CUR_LANG] && I18N[CUR_LANG][key]) || (I18N.fr[key] || key); }
+
+function setLang(lang) {
+  CUR_LANG = lang;
+  localStorage.setItem('wpw_lang', lang);
+  document.documentElement.lang = lang;
+  const fr = document.getElementById('langFr'), en = document.getElementById('langEn');
+  if (fr) fr.classList.toggle('active', lang === 'fr');
+  if (en) en.classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.getAttribute('data-i18n-ph')); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.getAttribute('data-i18n-title')); });
+  document.querySelector('.brand-sub').textContent = t('brandSub');
+  if (typeof updateRolesLockForBravery === 'function') updateRolesLockForBravery();
+  if (typeof renderSaved === 'function') renderSaved();
+  if (typeof renderResult === 'function' && lastT1 && lastT1.length) renderResult();
+}
+
 const RANKS = [
   { label: 'Débutant',    value: 0,  cls: 'rank-debutant' },
   { label: 'Iron',        value: 1,  cls: 'rank-iron' },
@@ -693,12 +780,14 @@ function setMode(mode) {
 function updateRolesToggleVisibility() {
   const row = document.getElementById('rolesToggleRow');
   const sub = document.getElementById('rolesToggleSub');
+  const need10 = CUR_LANG === 'en' ? 'Top · Jungle · Mid · ADC · Supp - 10 players required' : 'Top · Jungle · Mid · ADC · Supp - 10 joueurs requis';
+  const need5  = CUR_LANG === 'en' ? 'Top · Jungle · Mid · ADC · Supp - 5 players required'  : 'Top · Jungle · Mid · ADC · Supp - 5 joueurs requis';
   if (currentMode === 'custom') {
     row.style.opacity = '1'; row.style.pointerEvents = 'auto';
-    sub.textContent = 'Top · Jungle · Mid · ADC · Supp — 10 joueurs requis';
+    sub.textContent = need10;
   } else {
     row.style.opacity = '1'; row.style.pointerEvents = 'auto';
-    sub.textContent = 'Top · Jungle · Mid · ADC · Supp — 5 joueurs requis';
+    sub.textContent = need5;
   }
 }
 
@@ -730,7 +819,7 @@ function updateRolesLockForBravery() {
   if (braveryOn) {
     rolesToggle.checked = true;
     row.style.opacity = '0.7'; row.style.pointerEvents = 'none';
-    sub.textContent = 'Requis par le Mode Téméraire';
+    sub.textContent = t('braverySubLocked');
   } else {
     updateRolesToggleVisibility();
   }
@@ -752,7 +841,10 @@ function persistSaved() {
 function updateStorageStatus() {
   document.getElementById('storageDot').className = 'storage-dot';
   const n = savedPlayers.length;
-  document.getElementById('storageLabel').textContent = n === 0 ? 'Aucun joueur enregistré' : `${n} joueur${n>1?'s':''} enregistré${n>1?'s':''}`;
+  const lbl = CUR_LANG === 'en'
+    ? (n === 0 ? 'No saved players' : `${n} player${n>1?'s':''} saved`)
+    : (n === 0 ? 'Aucun joueur enregistré' : `${n} joueur${n>1?'s':''} enregistré${n>1?'s':''}`);
+  document.getElementById('storageLabel').textContent = lbl;
 }
 
 /* ─── Helpers ─── */
@@ -831,13 +923,13 @@ function pickChampsForRoles(roles) {
 function pickChampions(count) { return shuffle([...CHAMPIONS]).slice(0,count); }
 
 /* ════════════════════════════════════════════════════════
-   ULTIMATE BRAVERY — runes + build d'objets 100% aléatoires
+   ULTIMATE BRAVERY - runes + build d'objets 100% aléatoires
    à faire sur le champion tiré pour chaque joueur.
    Les icônes viennent du CDN officiel Data Dragon (Riot Games).
    Tout est regroupé ici pour rester facile à modifier.
 ════════════════════════════════════════════════════════ */
 
-/* Icônes 100% locales — aucun appel à une API ou un CDN externe.
+/* Icônes 100% locales - aucun appel à une API ou un CDN externe.
    Seules les runes présentes dans le pack d'images fourni sont utilisées. */
 const LOCAL_RUNE_ICONS = {
   'Conqueror': 'icon_runes/Precision/Conqueror.webp',
@@ -1084,7 +1176,7 @@ function rollOneBravery(role) {
   const secondaryMinors = pickUnique(secondary.minors, 2);
   const shards = STAT_SHARDS.map(row => row[Math.floor(Math.random()*row.length)]);
   const boots = BOOTS[Math.floor(Math.random()*BOOTS.length)];
-  // ADC : bottes + 6 objets (7 au total) — Supp : bottes + 1 objet support + 4 objets (6 au total) — autres : bottes + 5 objets (6 au total)
+  // ADC : bottes + 6 objets (7 au total) - Supp : bottes + 1 objet support + 4 objets (6 au total) - autres : bottes + 5 objets (6 au total)
   let items;
   if (role === 'Supp') {
     const supportItem = SUPPORT_ITEMS[Math.floor(Math.random()*SUPPORT_ITEMS.length)];
@@ -1117,7 +1209,7 @@ function buildBraveryCard(player, champ, build, color, side, idx, role) {
   const champBlock = champ
     ? `<div class="card-champ-wrap bravery-champ-wrap">
          <img class="card-champ-img" src="icon_champion/${champ}_0.jpg" alt="${champ}" onerror="this.style.display='none'">
-         <button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('${side}',${idx})" title="Je n'ai pas ce champion — relancer">
+         <button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('${side}',${idx})" title="Je n'ai pas ce champion - relancer">
            <i class="ti ti-refresh"></i>
          </button>
        </div>`
@@ -1130,7 +1222,7 @@ function buildBraveryCard(player, champ, build, color, side, idx, role) {
       ${roleBlock}
       <span class="bravery-player">${esc(player.name)}</span>
       <div class="bravery-champ-block">
-        <span class="bravery-champ">${champ ? champ : '—'}</span>
+        <span class="bravery-champ">${champ ? champ : '-'}</span>
         ${champBlock}
       </div>
     </div>
@@ -1172,7 +1264,7 @@ function buildBraveryTeamSection(title, players, score, champs, braveryArr, colo
   const header = title
     ? (() => {
         const avg = rankInfo(Math.round(score/players.length));
-        return `<div class="team-hd"><span class="team-title ${color}">${title}</span><span class="team-score-lbl">${score} pts · moy. ${avg.label}</span></div>`;
+        return `<div class="team-hd"><span class="team-title ${color}">${title}</span><span class="team-score-lbl">${score} ${t('pts')} · ${t('avg')} ${avg.label}</span></div>`;
       })()
     : '';
   return `<div class="team-section">${header}<div class="bravery-grid">${cards}</div></div>`;
@@ -1243,7 +1335,7 @@ function updateName(id, val) {
   if (btn) {
     btn.disabled = val.trim()==='' && !saved;
     btn.className = 'btn-icon pin' + (saved ? ' pinned' : '');
-    btn.title = saved ? 'Retirer des enregistrés' : val.trim() ? 'Enregistrer' : "Entrez un nom";
+    btn.title = saved ? t('unpin') : val.trim() ? t('save') : t('enterName');
     btn.innerHTML = `<i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i>`;
   }
 }
@@ -1257,14 +1349,14 @@ function renderGrid() {
     const row = document.createElement('div');
     row.className = 'player-row';
     row.innerHTML = `
-      <input type="text" placeholder="Joueur ${i+1}" value="${esc(p.name)}" oninput="updateName(${p.id}, this.value)">
+      <input type="text" placeholder="${t('playerN')} ${i+1}" value="${esc(p.name)}" oninput="updateName(${p.id}, this.value)">
       ${renderRankField('rank-'+p.id, p.rank)}
       <button class="btn-icon pin${saved?' pinned':''}" onclick="pinPlayer(${p.id})"
-        title="${saved?'Retirer des enregistrés':p.name.trim()?'Enregistrer':"Entrez un nom"}"
+        title="${saved?t('unpin'):p.name.trim()?t('save'):t('enterName')}"
         ${!p.name.trim()&&!saved?'disabled':''}>
         <i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i>
       </button>
-      <button class="btn-icon del" onclick="removePlayer(${p.id})" aria-label="Retirer">
+      <button class="btn-icon del" onclick="removePlayer(${p.id})" aria-label="${t('remove')}">
         <i class="ti ti-x"></i>
       </button>`;
     grid.appendChild(row);
@@ -1312,7 +1404,7 @@ function updateSavedSuggestions(query) {
   if (!q) { dd.style.display = 'none'; dd.innerHTML = ''; return; }
   const matches = matchSavedPlayers(q).slice(0, 8);
   if (!matches.length) {
-    dd.innerHTML = `<div class="suggestion-item disabled">Aucun joueur trouvé</div>`;
+    dd.innerHTML = `<div class="suggestion-item disabled">${t('noPlayerFound')}</div>`;
     dd.style.display = 'block';
     return;
   }
@@ -1366,11 +1458,11 @@ function renderSaved() {
   const list = document.getElementById('savedList');
   const visible = matchSavedPlayers(savedSearchQuery);
   if (!savedPlayers.length) {
-    list.innerHTML = `<p class="saved-empty">Aucun joueur enregistré.<br><span style="font-size:11px">Utilise 🔖 pour épingler.</span></p>`;
+    list.innerHTML = `<p class="saved-empty">${t('noSaved')}<br><span style="font-size:11px">${t('pinHint')}</span></p>`;
     return;
   }
   if (!visible.length) {
-    list.innerHTML = `<p class="saved-empty">Aucun résultat pour « ${esc(savedSearchQuery.trim())} ».</p>`;
+    list.innerHTML = `<p class="saved-empty">${t('noResultFor')} « ${esc(savedSearchQuery.trim())} ».</p>`;
     return;
   }
   list.innerHTML = visible.map(sp => {
@@ -1384,19 +1476,19 @@ function renderSaved() {
         </div>
         <div class="saved-actions">
           <button class="btn-add${alreadyIn?' added':''}" onclick="addFromSaved('${sp.id}')"
-            ${alreadyIn||players.length>=getMaxPlayers()?'disabled':''} title="${alreadyIn?'Déjà dans la liste':'Ajouter'}">
+            ${alreadyIn||players.length>=getMaxPlayers()?'disabled':''} title="${alreadyIn?t('alreadyIn'):t('add')}">
             <i class="ti ${alreadyIn?'ti-check':'ti-plus'}"></i>
           </button>
-          <button class="btn-icon" onclick="openEditSaved('${sp.id}')" title="Modifier"><i class="ti ti-pencil"></i></button>
-          <button class="btn-icon del" onclick="deleteSaved('${sp.id}')" title="Supprimer"><i class="ti ti-trash"></i></button>
+          <button class="btn-icon" onclick="openEditSaved('${sp.id}')" title="${t('edit')}"><i class="ti ti-pencil"></i></button>
+          <button class="btn-icon del" onclick="deleteSaved('${sp.id}')" title="${t('delete')}"><i class="ti ti-trash"></i></button>
         </div>
       </div>
       <div class="edit-saved-form" id="edit-${sp.id}">
-        <input type="text" id="edit-name-${sp.id}" value="${esc(sp.name)}" placeholder="Nom">
+        <input type="text" id="edit-name-${sp.id}" value="${esc(sp.name)}" placeholder="${t('name')}">
         ${renderRankField('edit-rank-'+sp.id, sp.rank)}
         <div class="edit-saved-actions">
-          <button class="btn-ghost sm" onclick="closeEditSaved('${sp.id}')">Annuler</button>
-          <button class="btn-primary sm" onclick="applyEditSaved('${sp.id}')">OK</button>
+          <button class="btn-ghost sm" onclick="closeEditSaved('${sp.id}')">${t('cancel')}</button>
+          <button class="btn-primary sm" onclick="applyEditSaved('${sp.id}')">${t('ok')}</button>
         </div>
       </div>`;
   }).join('');
@@ -1456,20 +1548,20 @@ async function generate() {
   const useChamps=document.getElementById('champToggle').checked || braveryOn;
 
   if (currentMode === 'flex') {
-    if (valid.length < 1) return showError('Ajoute au moins 1 joueur.');
-    if (valid.length > 5) return showError('Maximum 5 joueurs en mode Flex.');
-    if (useRoles && valid.length !== 5) return showError('Les rôles nécessitent 5 joueurs.');
+    if (valid.length < 1) return showError(t('errMin1'));
+    if (valid.length > 5) return showError(t('errMaxFlex'));
+    if (useRoles && valid.length !== 5) return showError(t('errRoles5'));
     const roles = useRoles ? shuffle(ROLES) : null;
     const champs = useChamps ? (roles ? pickChampsForRoles(roles) : pickChampions(valid.length)) : null;
     const score = valid.reduce((a,p)=>a+parseInt(p.rank),0);
     lastT1=valid; lastT2=[]; lastS1=score; lastS2=0;
     lastRoles1=roles; lastRoles2=null; lastChamps1=champs; lastChamps2=null;
-    document.getElementById('sessionTitle').textContent = 'Ton équipe Flex';
+    document.getElementById('sessionTitle').textContent = t('sessionFlex');
     document.getElementById('diffRow').innerHTML = '';
   } else {
-    if (valid.length < 2) return showError('Ajoute au moins 2 joueurs.');
-    if (valid.length % 2 !== 0) return showError('Le nombre de joueurs doit être pair.');
-    if (useRoles && valid.length !== 10) return showError('Les rôles nécessitent exactement 10 joueurs.');
+    if (valid.length < 2) return showError(t('errMin2'));
+    if (valid.length % 2 !== 0) return showError(t('errEven'));
+    if (useRoles && valid.length !== 10) return showError(t('errRoles10'));
     const [t1,t2,diff,combos]=bestSplit(valid.map(p=>({...p,rank:parseInt(p.rank)})));
     const roles1=useRoles?shuffle(ROLES):null, roles2=useRoles?shuffle(ROLES):null;
     let champs1=null, champs2=null;
@@ -1482,12 +1574,12 @@ async function generate() {
         const pick=pickChampions(t1.length+t2.length); champs1=pick.slice(0,t1.length); champs2=pick.slice(t1.length);
       }
     }
-    document.getElementById('sessionTitle').textContent = 'Résultat';
+    document.getElementById('sessionTitle').textContent = t('sessionResult');
     const s1=t1.reduce((a,p)=>a+p.rank,0), s2=t2.reduce((a,p)=>a+p.rank,0);
     lastT1=t1; lastT2=t2; lastS1=s1; lastS2=s2;
     lastRoles1=roles1; lastRoles2=roles2; lastChamps1=champs1; lastChamps2=champs2;
-    const ctxt=combos>1?` · ${combos} combinaisons équitables`:'';
-    document.getElementById('diffRow').innerHTML = `Diff : <strong>${diff} pt${diff!==1?'s':''}</strong>${ctxt}`;
+    const ctxt=combos>1?` · ${combos} ${t('combosLabel')}`:'';
+    document.getElementById('diffRow').innerHTML = `${t('diffLabel')} : <strong>${diff} ${t('pts')}</strong>${ctxt}`;
   }
 
   if (braveryOn) {
@@ -1575,7 +1667,7 @@ function buildFlexCards(title, players, roles, champs, color) {
   const avg = rankInfo(Math.round(score/players.length));
 
   // Trier l'affichage horizontal selon l'ordre des rôles (Top → Jungle → Mid → ADC → Supp)
-  // sans modifier le tirage aléatoire — uniquement l'ordre gauche→droite des cartes.
+  // sans modifier le tirage aléatoire - uniquement l'ordre gauche→droite des cartes.
   let order = players.map((p, i) => i);
   if (roles) {
     const roleOrder = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
@@ -1595,7 +1687,7 @@ function buildFlexCards(title, players, roles, champs, color) {
       ? `<div class="card-v-role"><img src="${ROLE_IMG[role]}" alt="${role}"><span class="card-v-role-name">${role}</span></div>`
       : '';
     const rerollBtn = champ
-      ? `<button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('flex',${i})" title="Je n'ai pas ce champion — relancer">
+      ? `<button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('flex',${i})" title="Je n'ai pas ce champion - relancer">
            <i class="ti ti-refresh"></i>
          </button>`
       : '';
@@ -1621,7 +1713,7 @@ function buildTeamSection(title, players, score, roles, champs, color, side) {
   const avg = rankInfo(Math.round(score/players.length));
 
   // Trier l'affichage selon l'ordre des rôles (Top → Jungle → Mid → ADC → Supp)
-  // sans modifier le tirage aléatoire lui-même — uniquement l'ordre de présentation.
+  // sans modifier le tirage aléatoire lui-même - uniquement l'ordre de présentation.
   let order = players.map((p, i) => i);
   if (roles) {
     const roleOrder = ['Top', 'Jungle', 'Mid', 'ADC', 'Supp'];
@@ -1635,7 +1727,7 @@ function buildTeamSection(title, players, score, roles, champs, color, side) {
     const role  = roles  ? roles[i]  : null;
     const bg = champ ? `style="background-image:url('icon_champion/${champ}_0.jpg')"` : '';
     const rerollBtn = champ
-      ? `<button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('${side}',${i})" title="Je n'ai pas ce champion — relancer">
+      ? `<button class="btn-reroll-single" onclick="event.stopPropagation();rerollSinglePlayer('${side}',${i})" title="Je n'ai pas ce champion - relancer">
            <i class="ti ti-refresh"></i>
          </button>`
       : '';
@@ -1667,7 +1759,7 @@ function buildTeamSection(title, players, score, roles, champs, color, side) {
   return `<div class="team-section">
     <div class="team-hd">
       <span class="team-title ${color}">${title}</span>
-      <span class="team-score-lbl">${score} pts · moy. ${avg.label}</span>
+      <span class="team-score-lbl">${score} ${t('pts')} · ${t('avg')} ${avg.label}</span>
     </div>
     <div class="player-cards">${cards}</div>
   </div>`;
@@ -1676,6 +1768,7 @@ function buildTeamSection(title, players, score, roles, champs, color, side) {
 /* ─── Init ─── */
 document.getElementById('savedRankField').outerHTML = renderRankField('savedRankField', 3);
 renderGrid(); loadFromStorage(); updateRolesToggleVisibility(); updateBraveryToggleAvailability();
+setLang(CUR_LANG);
 </script>
 </body>
 </html>
